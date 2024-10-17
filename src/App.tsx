@@ -1,50 +1,61 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
-
+// import "./App.css";
+import Database from '@tauri-apps/plugin-sql';
+import { invoke } from '@tauri-apps/api/core';
+import Receita, {IProduto as Produto} from './componentes/Receita'
+import { useEffect, useState } from 'react';
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+  const [r_name, setR_name] = useState<any>("luiz")
+  async function invoke_tauri(nome: string) {
+    setR_name(await invoke("greet", {name: nome}))
   }
 
+  // useEffect(() => {
+  //   async function boots(){
+  //     const db = await Database.load("sqlite:data.db");
+  //     const table = await db.execute("create table teste (id TEXT)")
+  //     console.log(table.rowsAffected)
+  //   }
+  //   boots()
+  // },[])
+
+  useEffect(() => {
+    async function bootstrap(){
+      const db = await Database.load("sqlite:data.db");
+    //  const populate = await db.execute("insert into teste (id) values ('sqlitee')")
+    //   console.log(populate.rowsAffected)
+      const text = await db.select("select * from teste")
+      console.log(text)
+    }
+    bootstrap()
+  },[r_name])
+
+let paoRechQueijo: Produto = {
+  codigo: 12467,
+  descricao: "pão rech c/ queijo",
+  rendimento: 12,
+  componentes: [
+    {codigo: 3605892, descricao: "quejo ralado parmesão kg", peso_liquido: 1},
+    {codigo: 2736926, descricao: "requeijão culinario 1,800kg", peso_liquido: 1.8},
+    {codigo: 87432, descricao: "massa salgada kg (uso)", peso_liquido: 1},
+    {codigo: 22012, descricao: "queijo mussarela p/ fatiar kg", peso_liquido: 1}
+
+  ],
+  medidas: [
+    {componente_id: 3605892, medida: 0.120},
+    {componente_id: 2736926, medida: 0.5},
+    {componente_id: 87432, medida: 12},
+    {componente_id: 22012, medida: 1.2}
+
+  ]
+}
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+    <div>
+      <h1>receita</h1>
+      <p>{r_name}</p>
+      <button onClick={() => invoke_tauri("eduardo")}>Eduardo</button>
+      <Receita produto={paoRechQueijo} componentes={paoRechQueijo.componentes} medidas={paoRechQueijo.medidas} />
+      <Receita produto={paoRechQueijo} componentes={paoRechQueijo.componentes} medidas={paoRechQueijo.medidas} />
+    </div>
   );
 }
 
