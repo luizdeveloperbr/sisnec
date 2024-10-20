@@ -1,60 +1,23 @@
 // import "./App.css";
 import Database from '@tauri-apps/plugin-sql';
-import { invoke } from '@tauri-apps/api/core';
-import Receita, {IProduto as Produto} from './componentes/Receita'
+import Receita, {IReceita ,IComponente} from './componentes/Receita'
 import { useEffect, useState } from 'react';
 function App() {
-  const [r_name, setR_name] = useState<any>("luiz")
-  async function invoke_tauri(nome: string) {
-    setR_name(await invoke("greet", {name: nome}))
-  }
-
-  // useEffect(() => {
-  //   async function boots(){
-  //     const db = await Database.load("sqlite:data.db");
-  //     const table = await db.execute("create table teste (id TEXT)")
-  //     console.log(table.rowsAffected)
-  //   }
-  //   boots()
-  // },[])
-
-  useEffect(() => {
+  const [receita, setProduto] = useState<IReceita[]>([{codigo: 9, descricao: "*",rendimento: 0}])
+  const [componentes, setCoponentes] = useState<IComponente[]>([])
+ useEffect(() => {
     async function bootstrap(){
       const db = await Database.load("sqlite:data.db");
-    //  const populate = await db.execute("insert into teste (id) values ('sqlitee')")
-    //   console.log(populate.rowsAffected)
-      const text = await db.select("select * from teste")
-      console.log(text)
+      setProduto(await db.select("SELECT Componente.codigo, Componente.descricao, Receita.rendimento FROM Receita JOIN Componente ON Receita.codigo = Componente.codigo WHERE Componente.codigo = 12467;"))
+      setCoponentes(await db.select("SELECT Componente.codigo, Componente.descricao, Componente.peso_liquido, Componente_Receita.medida FROM Componente_Receita JOIN Componente ON Componente_Receita.componente_codigo = Componente.codigo WHERE Componente_Receita.receita_codigo = 12467;"))
     }
+    console.log(componentes)
     bootstrap()
-  },[r_name])
+  },[])
 
-let paoRechQueijo: Produto = {
-  codigo: 12467,
-  descricao: "pão rech c/ queijo",
-  rendimento: 12,
-  componentes: [
-    {codigo: 3605892, descricao: "quejo ralado parmesão kg", peso_liquido: 1},
-    {codigo: 2736926, descricao: "requeijão culinario 1,800kg", peso_liquido: 1.8},
-    {codigo: 87432, descricao: "massa salgada kg (uso)", peso_liquido: 1},
-    {codigo: 22012, descricao: "queijo mussarela p/ fatiar kg", peso_liquido: 1}
-
-  ],
-  medidas: [
-    {componente_id: 3605892, medida: 0.120},
-    {componente_id: 2736926, medida: 0.5},
-    {componente_id: 87432, medida: 12},
-    {componente_id: 22012, medida: 1.2}
-
-  ]
-}
   return (
     <div>
-      <h1>receita</h1>
-      <p>{r_name}</p>
-      <button onClick={() => invoke_tauri("eduardo")}>Eduardo</button>
-      <Receita produto={paoRechQueijo} componentes={paoRechQueijo.componentes} medidas={paoRechQueijo.medidas} />
-      <Receita produto={paoRechQueijo} componentes={paoRechQueijo.componentes} medidas={paoRechQueijo.medidas} />
+      <Receita receita={receita} componentes={componentes} />
     </div>
   );
 }

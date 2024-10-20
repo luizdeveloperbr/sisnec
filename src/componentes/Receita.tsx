@@ -1,41 +1,28 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import './Receita.css'
-type TMedidas = {
-  componente_id: number
-  medida: number
-}
 
-interface IComponente {
+export interface IReceita {
   codigo: number
   descricao: string
-  peso_liquido: number
-}
-
-export interface IProduto extends Partial<IComponente> {
-  componentes: IComponente[]
-  medidas: TMedidas[]
   rendimento: number
 }
 
+export interface IComponente {
+  codigo: number
+  descricao: string
+  peso_liquido: number
+  medida: number
+}
 
+const Receita = ({ receita, componentes }: { receita: IReceita[], componentes: IComponente[] }) => {
 
-const Receita = ({ produto, componentes, medidas }: { produto: IProduto, componentes: IComponente[], medidas: TMedidas[] }) => {
-  const [displayComponentes, setDislayComponentes] = useState<(IComponente & TMedidas)[]>([])
-
-  useEffect(() => {
-    componentes.forEach(componente => {
-      let medidaEncontradada = medidas.find(medida => medida.componente_id === componente.codigo)
-      let componenteComMedida = Object.assign(componente, medidaEncontradada)
-      setDislayComponentes(displayComponentes => [...displayComponentes, componenteComMedida])
-    })
-  }, [])
   return (
     <div className="receita-wrap">
     <div className="receita-codigo">
-      <h2 className="receita-codigo_text">{produto.codigo}</h2>
+      <h2 className="receita-codigo_text">{receita[0].codigo}</h2>
     </div>
     <div className="receita-descricao">
-      <h2 className="receita-descricao_text">{produto.descricao}</h2>
+      <h2 className="receita-descricao_text">{receita[0].descricao}</h2>
     </div>
     <div className="embalagem-1">embalagem</div>
     <div className="quantidade">QTD</div>
@@ -48,8 +35,8 @@ const Receita = ({ produto, componentes, medidas }: { produto: IProduto, compone
     <div className="componente-descricao">
      descrição
     </div>
-    {displayComponentes.map((componente,index) => {
-      let porcentagemRMS = componente.medida / produto.rendimento / componente.peso_liquido
+    {componentes.map((componente,index) => {
+      let porcentagemRMS = componente.medida / receita[0].rendimento / componente.peso_liquido
       return (
         <React.Fragment key={index}>
         <div>{componente.codigo}</div>
@@ -63,6 +50,14 @@ const Receita = ({ produto, componentes, medidas }: { produto: IProduto, compone
         </React.Fragment>
       )
     })}
+    <div></div>
+    <div></div>
+    <div></div>
+    <div>{receita[0].rendimento}</div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
     </div>
 
   )
