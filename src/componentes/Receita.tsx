@@ -1,6 +1,7 @@
-import React from "react"
+import Database from '@tauri-apps/plugin-sql';
+import React, { useEffect, useState } from "react"
 import './Receita.css'
-
+import Decimal from "./Decimal";
 export interface IReceita {
   codigo: number
   descricao: string
@@ -14,9 +15,24 @@ export interface IComponente {
   medida: number
 }
 
-const Receita = ({ receita, componentes }: { receita: IReceita[], componentes: IComponente[] }) => {
+const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
+    const [receita, setReceita] = useState<IReceita[]>([])
+  const [componentes, setCoponentes] = useState<IComponente[]>([])
+
+  useEffect(()=>{
+    async function bootstrap() {
+      const db = await Database.load("sqlite:data.db");
+      setReceita(await db.select("SELECT Componente.codigo, Componente.descricao, Receita.rendimento FROM Receita JOIN Componente ON Receita.codigo = Componente.codigo WHERE Componente.codigo = $1;",[codigoInterno]))
+      setCoponentes(await db.select("SELECT Componente.codigo, Componente.descricao, Componente.peso_liquido, Componente_Receita.medida FROM Componente_Receita JOIN Componente ON Componente_Receita.componente_codigo = Componente.codigo WHERE Componente_Receita.receita_codigo = $1;", [codigoInterno]))
+    }
+    bootstrap()
+
+  },[codigoInterno])
+
 
   return (
+    <>
+    { receita.length == 0 ? <p>wait...</p> :
     <div className="receita-wrap">
     <div className="receita-codigo">
       <h2 className="receita-codigo_text">{receita[0].codigo}</h2>
@@ -42,10 +58,10 @@ const Receita = ({ receita, componentes }: { receita: IReceita[], componentes: I
         <div>{componente.codigo}</div>
         <div>{componente.descricao}</div>
         <div>3</div>
-        <div>{Intl.NumberFormat('pt-br',{minimumFractionDigits: 3}).format(componente.peso_liquido)}</div>
-        <div>{Intl.NumberFormat('pt-br',{style:"decimal", minimumFractionDigits: 3}).format(componente.medida)}</div>
+        <Decimal digitos={3} value={componente.peso_liquido} />
+        <Decimal digitos={3} value={componente.medida} />
         <div className="componente-custo-embalagem">6</div>
-        <div className="componente-porc-rms">{Intl.NumberFormat('pt-br',{minimumFractionDigits: 6}).format(porcentagemRMS)}</div>
+        <Decimal className="componente-porc-rms" digitos={6} value={porcentagemRMS} />
         <div className="componente-custo-produzido">8</div>
         </React.Fragment>
       )
@@ -53,12 +69,13 @@ const Receita = ({ receita, componentes }: { receita: IReceita[], componentes: I
     <div></div>
     <div></div>
     <div></div>
-    <div>{receita[0].rendimento}</div>
+    <Decimal digitos={3} value={receita[0].rendimento} />
     <div></div>
     <div></div>
     <div></div>
     <div></div>
-    </div>
+    </div>    }
+    </>
 
   )
 }
