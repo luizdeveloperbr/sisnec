@@ -31,52 +31,57 @@ const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
 
 
   return (
-    <>
-    { receita.length == 0 ? <p>wait...</p> :
+
     <div className="receita-wrap">
-    <div className="receita-codigo">
-      <h2 className="receita-codigo_text">{receita[0].codigo}</h2>
+    <div className="h-receita-codigo">
+     {receita.length == 0 ? <h2>0000-0</h2>: <h2>{receita[0].codigo}</h2>}
     </div>
-    <div className="receita-descricao">
-      <h2 className="receita-descricao_text">{receita[0].descricao}</h2>
+    <div className="h-receita-descricao">
+    {receita.length == 0 ? <h2>receita não encontrada</h2>: <h2 className="receita-descricao_text">{receita[0].descricao}</h2>}
     </div>
-    <div className="embalagem-1">embalagem</div>
-    <div className="quantidade">QTD</div>
-  <div className="custo-embalagem">custo embalagem</div>
-    <div className="porc-emb-rms">% da emb RMS</div>
-    <div className="custo-produzido">custo produzido</div>
-    <div className="componente-codigo">
+    <div className="h-embalagem-tipo">embalagem</div>
+    <div className="h-quantidade">QTD</div>
+  <div className="h-custo-embalagem">custo embalagem</div>
+    <div className="h-porc-emb-rms">% da emb RMS</div>
+    <div className="h-custo-produzido">custo produzido</div>
+    <div className="h-componente-codigo">
       codigo
     </div>
-    <div className="componente-descricao">
+    <div className="h-componente-descricao">
      descrição
     </div>
-    {componentes.map((componente,index) => {
+    {receita.length != 0 ? componentes.map((componente,index) => {
       let porcentagemRMS = componente.medida / receita[0].rendimento / componente.peso_liquido
       return (
         <React.Fragment key={index}>
-        <div>{componente.codigo}</div>
+        <div >{componente.codigo}</div>
         <div>{componente.descricao}</div>
-        <div>3</div>
-        <Decimal digitos={3} value={componente.peso_liquido} />
-        <Decimal digitos={3} value={componente.medida} />
-        <div className="componente-custo-embalagem">6</div>
-        <Decimal className="componente-porc-rms" digitos={6} value={porcentagemRMS} />
-        <div className="componente-custo-produzido">8</div>
+        <div>KG</div>
+        <div><Decimal digitos={3} value={componente.peso_liquido} /></div>
+        <div><Decimal digitos={3} value={componente.medida} /></div>
+        <div>R$ 10,00</div>
+        <div><Decimal digitos={6} value={porcentagemRMS} /></div>
+        <div>R$ 1,99</div>
         </React.Fragment>
       )
-    })}
+    }): <>
+      <div>0000-0</div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </>}
+    <div></div>
+    <div className="rendimento">RENDIMENTO {">>>>"}</div>
+    {receita.length == 0 ? <div>1,000</div>: <div><Decimal digitos={3} value={receita[0].rendimento} /></div>}
     <div></div>
     <div></div>
     <div></div>
-    <Decimal digitos={3} value={receita[0].rendimento} />
     <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    </div>    }
-    </>
-
+    </div>    
   )
 }
 export default Receita

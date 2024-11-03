@@ -1,62 +1,70 @@
-h2{
-    margin: 0;
-  }
-  .receita-wrap {
-    display: grid;
-    margin: 16px;
-    gap: 1px;
-    text-transform: uppercase;
-    text-align: center;
-    justify-content: center;
-    grid-template-areas: 
-           "c_receita d_receita emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido"
-           "comp-cod comp-desc emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido";
-  }
-  .receita-codigo {
-    grid-area: c_receita;
-    place-content: center;
-  }
-  .receita-descricao {
-    grid-area: d_receita;
-  }
-  .embalagem-1 {
-    grid-area: emb1;
-    place-content: center;
-  }
-  .embalagem-2 {
-    grid-area: emb2;
-  }
-  .receita-wrap > div {
-    border: 1px solid black;
-    padding: 0 5px;
-  }
-  .quantidade {
-    grid-area: qtd;
-    place-content: center;
+h2 {
+  margin: 0;
+}
 
-  }
-  .custo-embalagem {
-    grid-area: cst-emb;
-    place-content: center;
-    max-width: 100px;
-  }
-  .porc-emb-rms {
-    grid-area: porc-emb-rms;
-    place-content: center;
-    max-width: 100px;
-  }
-  .custo-produzido {
-    grid-area: custo-produzido;
-    place-content: center;
-    max-width: 100px;
-  }
-  
-  .componente-codigo {
-    grid-area: comp-cod;
-  }
-  .componente-descricao {
-    grid-area: comp-desc
-  }
-  .componente-custo-produzido, .componente-custo-embalagem, .componente-porc-rms {
-    max-width: 100px;
-  }
+.receita-wrap {
+  display: grid;
+  margin: 16px;
+  gap: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  justify-content: center;
+  grid-template-areas:
+    "c_receita d_receita emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido"
+    "comp-cod comp-desc emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido";
+    }
+
+.receita-wrap>div {
+  border: 1px solid black;
+  padding: 0 5px;
+}
+
+.h-receita-codigo {
+  grid-area: c_receita;
+  place-content: center;
+}
+
+.h-receita-descricao {
+  grid-area: d_receita;
+}
+
+.h-embalagem-tipo {
+  grid-area: emb1;
+  place-content: center;
+}
+
+.h-quantidade {
+  grid-area: qtd;
+  place-content: center;
+
+}
+
+.h-custo-embalagem {
+  grid-area: cst-emb;
+  place-content: center;
+  max-width: 100px;
+}
+
+.h-porc-emb-rms {
+  grid-area: porc-emb-rms;
+  place-content: center;
+  max-width: 100px;
+}
+
+.h-custo-produzido {
+  grid-area: custo-produzido;
+  place-content: center;
+  max-width: 100px;
+}
+
+.h-componente-codigo {
+  grid-area: comp-cod;
+}
+
+.h-componente-descricao {
+  grid-area: comp-desc
+}
+.rendimento {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
