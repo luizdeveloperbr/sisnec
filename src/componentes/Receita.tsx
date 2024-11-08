@@ -34,13 +34,13 @@ const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
 
     <div className="receita-wrap">
     <div className="h-receita-codigo">
-     {receita.length == 0 ? <h2>0000-0</h2>: <h2>{receita[0].codigo}</h2>}
+     <h2>{receita[0]?.codigo}</h2>
     </div>
     <div className="h-receita-descricao">
-    {receita.length == 0 ? <h2>receita não encontrada</h2>: <h2 className="receita-descricao_text">{receita[0].descricao}</h2>}
+     <h2 className="receita-descricao_text">{receita[0]?.descricao}</h2>
     </div>
     <div className="h-embalagem-tipo">embalagem</div>
-    <div className="h-quantidade">QTD</div>
+    <div className="h-quantidade">QNT</div>
   <div className="h-custo-embalagem">custo embalagem</div>
     <div className="h-porc-emb-rms">% da emb RMS</div>
     <div className="h-custo-produzido">custo produzido</div>
@@ -54,7 +54,7 @@ const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
       let porcentagemRMS = componente.medida / receita[0].rendimento / componente.peso_liquido
       return (
         <React.Fragment key={index}>
-        <div >{componente.codigo}</div>
+        <div>{componente.codigo}</div>
         <div>{componente.descricao}</div>
         <div>KG</div>
         <div><Decimal digitos={3} value={componente.peso_liquido} /></div>
@@ -76,7 +76,7 @@ const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
     </>}
     <div></div>
     <div className="rendimento">RENDIMENTO {">>>>"}</div>
-    {receita.length == 0 ? <div>1,000</div>: <div><Decimal digitos={3} value={receita[0].rendimento} /></div>}
+    <div><Decimal digitos={3} value={receita[0]?.rendimento} /></div>
     <div></div>
     <div></div>
     <div></div>
