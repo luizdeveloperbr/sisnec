@@ -48,6 +48,11 @@ pub fn run() {
         description: "insert medidas dos coponentes",
         sql:"INSERT INTO Componente_Receita (receita_codigo, componente_codigo, medida) VALUES (12467, 3605892, 0.120), (12467, 2736926, 0.5), (12467, 87432, 12), (12467, 22012, 1.2);",
         kind: MigrationKind::Up
+    }, Migration {
+        version: 8,
+        description: "add column estoque, custo_emb",
+        sql:"alter table Componente add column estoque REAL;alter table Componente add column custo_emb REAL;",
+        kind: MigrationKind::Up
     }];
 
     tauri::Builder::default()
