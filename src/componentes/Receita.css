@@ -6,12 +6,11 @@ h2 {
   display: grid;
   padding: 10px;
   margin: 16px;
+  font-size: 1.75rem;
   gap: 1px;
-  width: fit-content;
   border-radius: 8px;
   text-transform: uppercase;
   text-align: center;
-  justify-content: center;
   grid-template-areas:
     "c_receita d_receita emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido"
     "comp-cod comp-desc emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido";
@@ -44,20 +43,16 @@ h2 {
 
 .h-custo-embalagem {
   grid-area: cst-emb;
-  place-content: center;
-  max-width: 100px;
-}
+  place-content: center;}
 
 .h-porc-emb-rms {
   grid-area: porc-emb-rms;
   place-content: center;
-  max-width: 100px;
 }
 
 .h-custo-produzido {
   grid-area: custo-produzido;
   place-content: center;
-  max-width: 100px;
 }
 
 .h-componente-codigo {
@@ -70,4 +65,12 @@ h2 {
 .rendimento {
   grid-column-start: 2;
   grid-column-end: 4;
+}
+.componente-descricao {
+  text-align: start;
+  padding-left: 4px;
+}
+.gray {
+  color: gray;
+  font-style: italic;
 }

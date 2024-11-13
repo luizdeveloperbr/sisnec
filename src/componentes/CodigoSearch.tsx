@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import './CodigoSearch.css'
+import SearchIcon from '../assets/search.svg'
 type FormSearchCode = {
   codigo: number
 }
@@ -11,11 +12,9 @@ export default function CodigoSearchBox(props: { setCodigoFunc: (_: number) => v
     props.setCodigoFunc(Number(codigo))
   }
   return (
-    <div className="codigo_searchbar">
-    <form onSubmit={handleSubmit(inputCode)}>
-      <input type="number" {...register("codigo")} />
-      <button type="submit">procurar</button>
+    <form onSubmit={handleSubmit(inputCode)} className="codigo_search">
+      <input type="search" {...register("codigo")} className="codigo_search-input"/>
+      <button type="submit"><img src={SearchIcon} alt="" /></button>
     </form>
-    </div>
   )
 }
