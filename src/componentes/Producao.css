@@ -1,0 +1,46 @@
+.producao-wrap>div,
+input {
+  border: 1px solid black;
+  padding: 0 5px;
+}
+
+h2 {
+  margin: 0;
+}
+
+.producao-wrap {
+  display: grid;
+  padding: 10px;
+  margin: 16px;
+  font-size: 1.75rem;
+  gap: 1px;
+  grid-template-columns: 15% 45% 10% 15% 15%;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.producao-rendimento {
+  grid-column-start: 1;
+  grid-column-end: 3;
+
+}
+
+.head-title-padrao {
+  grid-row: 1/3;
+  grid-column-start: 3;
+}
+
+.head-title-produzido {
+  grid-row: 1/3;
+  grid-column-start: 4;
+}
+
+.head-title-emb {
+  grid-row: 1/3;
+  grid-column-start: 5;
+}
+
+input {
+  font-size: 1.5rem;
+  text-align: center;
+}
