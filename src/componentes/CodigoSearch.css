@@ -1,8 +1,8 @@
-.codigo_search{
-    display: flex;
-    justify-content: center;
-    gap: 4px
+.codigo_search {
+	display: flex;
+	justify-content: center;
+	gap: 4px;
 }
 .codigo_search-input {
-    font-size: 1.75rem;
+	font-size: 1.75rem;
 }
