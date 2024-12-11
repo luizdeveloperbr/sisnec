@@ -1,3 +1,4 @@
+import "./Producao.css";
 import Database from "@tauri-apps/plugin-sql";
 import { useEffect, useState } from "react";
 import {
@@ -6,40 +7,33 @@ import {
 	SubmitHandler,
 	FieldValues,
 } from "react-hook-form";
-import Componente from "../Componente";
-import "./Producao.css";
-import { getReceita } from "../../database/lib";
+import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
-export interface IReceita {
-	codigo: number;
-	descricao: string;
-	rendimento: number;
-}
+import Componente from "../Componente";
+import { IComponente } from "../Componente/Componente.types";
+import { IReceita } from "../Receita/Receita.types";
+import { getComponente, getReceita } from "../../database/lib";
+import { Input } from "@/components/ui/input";
 
-export interface IComponente {
-	codigo: number;
-	descricao: string;
-	peso_liquido: number;
-	medida: number;
-	custo: number;
-	estoque: number;
-	tipo: number;
-}
-
-const Producao = ({ codigoInterno }: { codigoInterno: number }) => {
+const Producao = ({codigoInterno}: {codigoInterno: number}) => {
 	const [receita, setReceita] = useState<IReceita>();
 	const [componentes, setComponentes] = useState<IComponente[]>([]);
 	const [total_produzido, setTotalProduzido] = useState<number>();
 
 	const handleProducao: SubmitHandler<FieldValues> = async (formData) => {
 		const db = await Database.load("sqlite:data.db");
-		let timestamp = format(new Date(),"dd-MM-yyyy");
-		let componentes = Object.entries(formData);
-		let filterComponentes = componentes.filter(
+		console.log("formdata",formData)
+		console.log("componentes",componentes)
+		let timestamp = format(new Date(),"dd-MM-yyyy pp");
+		let Lcomponentes = Object.entries(formData);
+		let filterComponentes = Lcomponentes.filter(
 			(e) => e[0] !== "total_produzido",
 		);
+		console.log("funcSubmit", JSON.stringify(filterComponentes))
 		filterComponentes.forEach(async (e) => {
-			let [componente_id, medida] = e;
+			let [componente_id, medida] = e
+			console.log("medida", Boolean(medida))
+			if(Boolean(medida)){
 			await db.execute(
 				"insert into Producao(codigo, total_produzido, componente_id, medida, data) values ($1, $2, $3, $4, $5)",
 				[
@@ -50,38 +44,32 @@ const Producao = ({ codigoInterno }: { codigoInterno: number }) => {
 					timestamp,
 				],
 			);
+		}
+			await db.execute("update Componente set estoque = estoque + $1 WHERE codigo = $2",[formData.total_produzido, codigoInterno])
 		});
 	};
 
-	// função de inserção da produção no banco de dados
-	const methods = useForm();
+	const formContext = useForm();
+
 	useEffect(() => {
-		async function bootstrap() {
-			const db = await Database.load("sqlite:data.db");
-			const receitas = await getReceita(codigoInterno)
-			setReceita(receitas)
-			setComponentes(
-				await db.select(
-					"SELECT Componente.tipo ,Componente.estoque, Componente.custo, Componente.codigo, Componente.descricao, Componente.peso_liquido, Componente_Receita.medida FROM Componente_Receita JOIN Componente ON Componente_Receita.componente_codigo = Componente.codigo WHERE Componente_Receita.receita_codigo = $1;",
-					[codigoInterno],
-				),
-			);
+		async function bootstrap(){
+			setReceita(await getReceita(codigoInterno))
+			setComponentes([])
+			let newComponentes = await getComponente(codigoInterno)
+			setComponentes(newComponentes)	
 		}
-		bootstrap();
-	}, [codigoInterno]);
+		bootstrap()
+		console.log("useEffect",componentes)
+	},[codigoInterno])
 
 	return (
-		<FormProvider {...methods}>
+		<FormProvider {...formContext}>
 			<form
-				onSubmit={methods.handleSubmit(handleProducao)}
+				onSubmit={formContext.handleSubmit(handleProducao)}
 				className="producao-wrap"
 			>
-				<div>
-					<h2>{receita?.codigo}</h2>
-				</div>
-				<div>
-					<h2>{receita?.descricao}</h2>
-				</div>
+					<h2 className="border-black border">{receita?.codigo}</h2>
+					<h2 className="border-black border">{receita?.descricao}</h2>
 				<div className="head-title-padrao">estoque</div>
 				<div>
 					<label htmlFor="prod">Produzido</label>
@@ -90,25 +78,30 @@ const Producao = ({ codigoInterno }: { codigoInterno: number }) => {
 				<div>descrição</div>
 				<input
 					id="prod"
+					required
 					type="number"
 					step="0.001"
-					{...methods.register("total_produzido", { value: total_produzido })}
+					{...formContext.register("total_produzido", { value: total_produzido })}
 					onChange={(e) => setTotalProduzido(Number(e.target.value))}
 				/>
 				{componentes?.map((componente) => {
 					return (
 						<Componente
 							key={componente.codigo}
-							componente={componente}
-							form={methods}
+							componenteProp={componente}
+							formCtx={formContext}
 						/>
 					);
 				})}
+				<div>97152</div>
+				<div>Reaproveitamento</div>
+				<div>?</div>
+				<Input {...formContext.register("99999")} className="shadow-md border-gray-600" placeholder="0,000"/>
 				<div className="producao-rendimento">RENDIMENTO {">>>>"}</div>
 				<div>X</div>
-				<button type="submit" className="submt">
+				<Button type="submit" variant="outline" className="submt bg-slate-200">
 					Salvar
-				</button>
+				</Button>
 			</form>
 		</FormProvider>
 	);

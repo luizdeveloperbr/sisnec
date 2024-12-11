@@ -4,11 +4,11 @@ import { IReceita } from "./Receita.types";
 import Database from "@tauri-apps/plugin-sql";
 import React, { useEffect, useState } from "react";
 import Decimal from "../Decimal";
-import { IComponente } from "../Componente/Componente.types";
+import { ComponenteReceita } from "../Componente/Componente.types";
 
 const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
 	const [receita, setReceita] = useState<IReceita[]>([]);
-	const [componentes, setComponentes] = useState<IComponente[]>([]);
+	const [componentes, setComponentes] = useState<ComponenteReceita[]>([]);
 
 	useEffect(() => {
 		async function bootstrap() {
@@ -30,8 +30,8 @@ const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
 	}, [codigoInterno]);
 
 	// Função para calcular a porcentagem RMS de um componente
-	const calcularPorcentagemRMS = (componente: IComponente) => {
-		return componente.medida / receita[0].rendimento / componente.peso_liquido;
+	const calcularPorcentagemRMS = (componente: ComponenteReceita) => {
+		return componente.medida / receita[0]?.rendimento / componente.peso_liquido;
 	};
 
 	// Calcula a soma dos custos
@@ -63,12 +63,11 @@ const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
 			</div>
 			<div className="h-componente-codigo">codigo</div>
 			<div className="h-componente-descricao">descrição</div>
-			{receita.length != 0 ? (
-				componentes.map((componente) => {
+				{componentes?.map((componente) => {
 					const porcentagemRMS = calcularPorcentagemRMS(componente);
 					return (
 						<React.Fragment key={componente.codigo}>
-							<div className={componente.estoque ? "" : "gray"}>
+							<div>
 								{componente.codigo}
 							</div>
 							<div className="componente-descricao">{componente.descricao}</div>
@@ -96,19 +95,7 @@ const Receita = ({ codigoInterno }: { codigoInterno: number }) => {
 							</div>
 						</React.Fragment>
 					);
-				})
-			) : (
-				<>
-					<div>0000-0</div>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-				</>
-			)}
+				})}
 			<div></div>
 			<div className="rendimento">RENDIMENTO {">>>>"}</div>
 			<div>

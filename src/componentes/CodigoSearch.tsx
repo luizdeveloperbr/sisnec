@@ -1,30 +1,26 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import "./CodigoSearch.css";
+// import { useForm, SubmitHandler } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import SearchIcon from "../assets/search.svg";
-type FormSearchCode = {
-	codigo: number;
-};
+// type FormSearchCode = {
+// 	codigo: number;
+// };
 
-export default function CodigoSearchBox(props: {
+export default function CodigoSearchBox({setCodigoFunc}: {
 	setCodigoFunc: (_: number) => void;
 }) {
-	const { register, handleSubmit } = useForm<FormSearchCode>();
-	const inputCode: SubmitHandler<FormSearchCode> = (
-		formData: FormSearchCode,
-	) => {
-		const { codigo } = formData;
-		props.setCodigoFunc(Number(codigo));
-	};
+	// const { register, handleSubmit } = useForm<FormSearchCode>();
 	return (
-		<form onSubmit={handleSubmit(inputCode)} className="codigo_search">
-			<input
-				type="search"
-				{...register("codigo")}
-				className="codigo_search-input"
+			<div className="flex justify-center gap-1">
+			<Input
+				type="text"
+				// {...register("codigo")}
+				className="my-2 w-fit bg-slate-200"
+				onChange={(e) => setCodigoFunc(Number(e.target.value))}
 			/>
-			<button type="submit">
+			<Button variant="outline" className="my-2 bg-slate-200">
 				<img src={SearchIcon} alt="" />
-			</button>
-		</form>
+			</Button>
+		</div>
 	);
 }

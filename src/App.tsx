@@ -7,15 +7,16 @@ import Database from "@tauri-apps/plugin-sql";
 // import AdicionarComponente from './componentes/AdicionarComponente';
 function App() {
 	const [codigo, setCodigo] = useState<number>(0);
+	const codigos = [12467,87432]
 	// const [listaProduzido, setListaProduzido] = useState<Array<any>>([])
 	useEffect(() => {
 		async function bootstrap() {
 			let db = await Database.load('sqlite:data.db')
-			let result:Array<{componentes: string}> = await db.select(`
+			let result:Array<{receita_codigo: number, data_producao: string, receita: string, total_produzido: number, componentes: string}> = await db.select(`
 				SELECT  
 					p.codigo AS receita_codigo,
 					p.data AS data_producao,
-					c.descricao AS receita,
+					cc.descricao AS receita,
 					p.total_produzido,
 					'[' || GROUP_CONCAT(
 						'{"componente_id":' || p.componente_id || 
@@ -30,9 +31,8 @@ function App() {
 				GROUP BY p.codigo, p.data;
 
 `, [codigo])
-				console.log("full",result)
-				console.log("componente 0",JSON.parse(result[0].componentes))
-				console.log("componente 1",JSON.parse(result[1].componentes))
+				console.log("App.tsx1", result)
+				console.log("App.tsx2",JSON.parse(result[2].componentes))
 
 				// setListaProduzido(result)
 
@@ -45,7 +45,7 @@ function App() {
 			<CodigoSearchBox setCodigoFunc={setCodigo} />
 			{/* <AdicionarComponente receita={codigo} /> */}
 			<Receita codigoInterno={codigo} />
-			<Producao codigoInterno={codigo} />
+			{codigos.map(c => <Producao codigoInterno={c} />)}
 			<ul>
 				{/* {listaProduzido.map(item => <li>{item.componente} - {item.medida}</li>)} */}
 			</ul>
