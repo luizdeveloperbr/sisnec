@@ -13,7 +13,7 @@ export async function getReceita(codigoInterno: number) {
 export async function getComponente(codigoInterno: number) {
 	const db = await Database.load("sqlite:data.db");
 	const data: IComponente[] = await db.select(
-		"SELECT Componente.tipo ,Componente.estoque, Componente.custo, Componente.codigo, Componente.descricao, Componente.peso_liquido, Componente_Receita.medida FROM Componente_Receita JOIN Componente ON Componente_Receita.componente_codigo = Componente.codigo WHERE Componente_Receita.receita_codigo = $1;",
+		"SELECT Componente.embalagem, Componente.tipo ,Componente.estoque, Componente.custo, Componente.codigo, Componente.descricao, Componente.peso_liquido, Componente_Receita.medida FROM Componente_Receita JOIN Componente ON Componente_Receita.componente_codigo = Componente.codigo WHERE Componente_Receita.receita_codigo = $1;",
 		[codigoInterno],
 	);
 	return data;
