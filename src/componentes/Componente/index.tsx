@@ -1,16 +1,14 @@
 import Database from "@tauri-apps/plugin-sql";
 import React, { useEffect, useState } from "react";
-import Decimal from "../Decimal";
-import { IComponente } from "./Componente.types";
-import { UseFormReturn } from "react-hook-form";
+import { IComponente } from "./types";
+import { Link } from "react-router-dom";
+import { decimal } from "@/utils";
 export default function ComponenteProducao({
 	componenteProp,
-	formCtx,
-}: { componenteProp: IComponente; formCtx: UseFormReturn }) {
+}: { componenteProp: IComponente}) {
 	const [descricao, setDescricao] = useState<string>();
-	const [medida, setMedida] = useState<number>();
 	const [componentes, setComponentes] = useState<IComponente[]>([]);
-	const [local, setLocal] = useState<IComponente>()
+	const [local, setLocal] = useState<IComponente>();
 	// procurar pela descrição
 	useEffect(() => {
 		async function bootstrap() {
@@ -22,26 +20,24 @@ export default function ComponenteProducao({
 			);
 			if (queryComponente.length !== 1) {
 				setComponentes(queryComponente);
-			}else{
-				setLocal(queryComponente[0])
+			} else {
+				setLocal(queryComponente[0]);
 			}
 		}
 		bootstrap();
 	}, [descricao]);
 	return (
 		<React.Fragment>
-				<div>{local?.codigo ?? componenteProp.codigo}</div>
-			{componenteProp.tipo == 6 && componenteProp.estoque <= 0 ? (
-				<a>{componenteProp.descricao}</a>
-			) : (
-				<input
-					placeholder={componenteProp.descricao}
-					type="text"
-					list={componenteProp.descricao}
-					disabled={componenteProp.estoque !== 0}
-					onChange={(e) => setDescricao(e.target.value)}
-				/>
-			)}
+			<div>{local?.codigo ?? componenteProp.codigo}</div>
+			<input
+			className="disabled:cursor-not-allowed"
+				placeholder={componenteProp.descricao}
+				type="search"
+				// onEmptied={() => console.log("limpo")}
+				list={componenteProp.descricao}
+				disabled={componenteProp.estoque !== 0}
+				onChange={(e) => setDescricao(e.target.value)}
+			/>
 			<datalist id={componenteProp.descricao}>
 				{componentes?.map((c, i) => (
 					<option key={i} value={c.descricao}>
@@ -50,17 +46,22 @@ export default function ComponenteProducao({
 				))}
 			</datalist>
 			<div>
-				<Decimal value={local?.estoque ?? componenteProp.estoque} digitos={3} />
+				{local?.estoque == undefined &&
+				componenteProp.tipo == 6 &&
+				componenteProp.estoque <= 0 ? (
+					<Link to={`/producao/${componenteProp.codigo}`}>
+						<span>{decimal(local?.estoque ?? componenteProp.estoque, 3)}</span>
+					</Link>
+				) : (
+					<span>{decimal(local?.estoque ?? componenteProp.estoque, 3)}</span>
+				)}
 			</div>
 			<input
 				type="number"
 				max={local?.estoque ?? componenteProp.estoque}
 				min={0}
+				name={String(local?.codigo ?? componenteProp.codigo)}
 				step="0.001"
-				{...formCtx.register(`${local?.codigo ?? componenteProp.codigo} `, {
-					value: medida,
-				})}
-				onChange={(e) => setMedida(Number(e.target.value))}
 			/>
 		</React.Fragment>
 	);
