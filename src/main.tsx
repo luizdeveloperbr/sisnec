@@ -1,20 +1,20 @@
-import './layout.css'
+import "./layout.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "@/layout/componente";
-import ProducaoRoute from "@/pages/Producao/route"
-import PadariaRoute from "@/pages/Padaria/route"
-
-// import ReceitaRoute from "@/Receita/route";
+// import ProducaoRoute from "@/pages/Producao/route";
+import PadariaRoute from "@/pages/Padaria/route";
+import CadastroRoute from "@/pages/Cadastro/route";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		Component: Layout,
 		children: [
-			ProducaoRoute,
+			// ProducaoRoute,
 			PadariaRoute,
+			CadastroRoute
 		],
 	},
 ]);
