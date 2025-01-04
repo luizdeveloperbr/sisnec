@@ -2,7 +2,7 @@ export interface Componente {
 	codigo: number;
 	descricao: string;
 	peso_liquido: number;
-	medida: number;
+	embalagem: string;
 	custo: number;
 	estoque: number;
 	tipo: number;
@@ -23,5 +23,6 @@ export interface IComponente {
 	medida: number;
 	custo: number;
 	estoque: number;
+	embalagem: string;
 	tipo: number;
 }

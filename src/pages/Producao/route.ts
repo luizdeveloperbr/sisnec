@@ -1,15 +1,15 @@
-import Database from "@tauri-apps/plugin-sql"
-import ProducaoPage from "@/pages/Producao"
-import {RouteObject} from "react-router"
+import Database from "@tauri-apps/plugin-sql";
+import ProducaoPage from "@/pages/Producao";
+import { RouteObject } from "react-router";
 import { Producao } from "@/componentes/Producao/types";
 
 const route: RouteObject = {
-    path: "produzido",
-    Component: ProducaoPage,
-    loader: async () => {
-        const db = await Database.load("sqlite:data.db")
-        let result: Producao[] = await db.select(
-            `
+	path: "produzido",
+	Component: ProducaoPage,
+	loader: async () => {
+		const db = await Database.load("sqlite:data.db");
+		let result: Producao[] = await db.select(
+			`
             SELECT  
                 p.codigo AS receita_codigo,
                 p.data AS data_producao,
@@ -26,8 +26,9 @@ const route: RouteObject = {
             JOIN Componente c ON p.componente_id = c.codigo
             GROUP BY p.codigo, p.data;
 
-`);
-        return result
-    }
-}
-export default route
+`,
+		);
+		return result;
+	},
+};
+export default route;

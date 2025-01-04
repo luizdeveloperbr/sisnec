@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { decimal } from "@/utils";
 export default function ComponenteProducao({
 	componenteProp,
-}: { componenteProp: IComponente}) {
+}: { componenteProp: IComponente }) {
 	const [descricao, setDescricao] = useState<string>();
 	const [componentes, setComponentes] = useState<IComponente[]>([]);
 	const [local, setLocal] = useState<IComponente>();
@@ -30,7 +30,7 @@ export default function ComponenteProducao({
 		<React.Fragment>
 			<div>{local?.codigo ?? componenteProp.codigo}</div>
 			<input
-			className="disabled:cursor-not-allowed"
+				className="disabled:cursor-not-allowed"
 				placeholder={componenteProp.descricao}
 				type="search"
 				// onEmptied={() => console.log("limpo")}

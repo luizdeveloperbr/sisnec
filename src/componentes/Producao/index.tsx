@@ -4,8 +4,11 @@ import Componente from "@/componentes/Componente";
 import { IComponente } from "@/componentes/Componente/types";
 import { useFetcher } from "react-router-dom";
 
-const ProducaoComponente = ({produto}: {produto: {codigo: number, descricao: string, componentes: IComponente[]}}) => {
-
+const ProducaoComponente = ({
+	produto,
+}: {
+	produto: { codigo: number; descricao: string; componentes: IComponente[] };
+}) => {
 	const fetcher = useFetcher();
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -16,7 +19,11 @@ const ProducaoComponente = ({produto}: {produto: {codigo: number, descricao: str
 	};
 
 	return (
-		<fetcher.Form method="post" className="producao-wrap" onSubmit={handleSubmit}>
+		<fetcher.Form
+			method="post"
+			className="producao-wrap"
+			onSubmit={handleSubmit}
+		>
 			<input type="hidden" name="receita" defaultValue={produto?.codigo} />
 			<h2 className="border-black border">{produto?.codigo}</h2>
 			<h2 className="border-black border">{produto?.descricao}</h2>
@@ -35,20 +42,9 @@ const ProducaoComponente = ({produto}: {produto: {codigo: number, descricao: str
 			/>
 			{produto.componentes?.map((componente) => {
 				return (
-					<Componente
-						key={componente.codigo}
-						componenteProp={componente}
-					/>
+					<Componente key={componente.codigo} componenteProp={componente} />
 				);
 			})}
-			{/* <div>x</div>
-			<div>x</div>
-			<div>x</div>
-			<Input
-				name="99999"
-				className="shadow-md border-gray-600"
-				placeholder="0,000"
-			/> */}
 			<div className="producao-rendimento">RENDIMENTO {">>>>"}</div>
 			<div>X</div>
 			<Button type="submit" variant="outline" className="submt bg-slate-200">

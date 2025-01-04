@@ -1,49 +1,31 @@
 import "./Receita.css";
-import React, { useEffect, useState } from "react";
-import { IReceita } from "./types";
+import React from "react";
 import { ComponenteReceita, IComponente } from "../Componente/types";
 import { decimal, money } from "@/utils";
-import { getComponente, getReceita } from "@/database/lib";
 
-
-const Receita = ({codigoInterno}: {codigoInterno: number}) => {
-	// const { receita, componentes } = useLoaderData<{
-	// 	receita: IReceita;
-	// 	componentes: IComponente[];
-	// }>();
-	const [receita, setReceita] = useState<IReceita>()
-	const [componentes, setComponentes] = useState<IComponente[]>([])
-
+const Receita = ({ produto }: {
+	produto: { codigo: number; descricao: string; rendimento: number; componentes: IComponente[] };
+}) => {
 
 	// Função para calcular a porcentagem RMS de um componente
 	const calcularPorcentagemRMS = (componente: ComponenteReceita) => {
-		if(!receita) return 0
-		return componente.medida / receita?.rendimento / componente.peso_liquido;
+		if (!produto) return 0;
+		return componente.medida / produto?.rendimento / componente.peso_liquido;
 	};
 
 	// Calcula a soma dos custos
-	const somaTotal = componentes.reduce((acc, componente) => {
+	const somaTotal = produto.componentes.reduce((acc, componente) => {
 		const porcentagemRMS = calcularPorcentagemRMS(componente);
 		return acc + componente.custo * porcentagemRMS;
 	}, 0);
 
-	useEffect(() => {
-			async function bootstrap(){
-				const receita: IReceita = await getReceita(codigoInterno);
-				const componentes: IComponente[] = await getComponente(codigoInterno);
-				setComponentes(componentes)
-				setReceita(receita)
-			}
-			bootstrap()
-	},[codigoInterno])
-
 	return (
 		<div className="receita-wrap">
 			<div className="h-receita-codigo">
-				<h2>{receita?.codigo}</h2>
+				<h2>{produto?.codigo}</h2>
 			</div>
 			<div className="h-receita-descricao">
-				<h2 className="receita-descricao_text">{receita?.descricao}</h2>
+				<h2 className="receita-descricao_text">{produto?.descricao}</h2>
 			</div>
 			<div className="h-embalagem-tipo">embalagem</div>
 			<div className="h-quantidade">QNT</div>
@@ -60,13 +42,13 @@ const Receita = ({codigoInterno}: {codigoInterno: number}) => {
 			</div>
 			<div className="h-componente-codigo">codigo</div>
 			<div className="h-componente-descricao">descrição</div>
-			{componentes?.map((componente) => {
+			{produto.componentes?.map((componente) => {
 				const porcentagemRMS = calcularPorcentagemRMS(componente);
 				return (
 					<React.Fragment key={componente.codigo}>
 						<div>{componente.codigo}</div>
 						<div className="componente-descricao">{componente.descricao}</div>
-						<div>KG</div>
+						<div>{componente.embalagem}</div>
 						<div>
 							<span>{decimal(componente.peso_liquido, 3)}</span>
 						</div>
@@ -84,7 +66,7 @@ const Receita = ({codigoInterno}: {codigoInterno: number}) => {
 			<div></div>
 			<div className="rendimento">RENDIMENTO {">>>>"}</div>
 			<div>
-				<span>{decimal(receita?.rendimento ?? 0, 3)} </span>
+				<span>{decimal(produto?.rendimento ?? 0, 3)} </span>
 			</div>
 			<div></div>
 			<div></div>
