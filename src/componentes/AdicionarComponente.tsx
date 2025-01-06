@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import Database from "@tauri-apps/plugin-sql";
-import { IComponente } from "../Componente/types";
+import { IComponente } from "@/componentes//Componente/types";
 import { useEffect, useState } from "react";
 export default function AdicionarComponente(props: { receita: number }) {
 	const [componente, setComponente] = useState<IComponente[]>();
