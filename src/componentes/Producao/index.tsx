@@ -3,6 +3,7 @@ import { Button } from "@/shadcn/ui/button";
 import Componente from "@/componentes/Componente";
 import { IComponente } from "@/componentes/Componente/types";
 import { useFetcher } from "react-router-dom";
+import { Input } from "@/shadcn/ui/input";
 
 const ProducaoComponente = ({
 	produto,
@@ -33,8 +34,9 @@ const ProducaoComponente = ({
 			</div>
 			<div>codigo</div>
 			<div>descrição</div>
-			<input
+			<Input
 				id="prod"
+				className="border-gray-600"
 				name="total_produzido"
 				required
 				type="number"
