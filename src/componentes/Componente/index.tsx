@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { IComponente } from "./types";
 import { Link } from "react-router-dom";
 import { decimal } from "@/utils";
+import { Input } from "@/shadcn/ui/input";
 export default function ComponenteProducao({
 	componenteProp,
 }: { componenteProp: IComponente }) {
@@ -28,12 +29,11 @@ export default function ComponenteProducao({
 	}, [descricao]);
 	return (
 		<React.Fragment>
-			<div>{local?.codigo ?? componenteProp.codigo}</div>
-			<input
-				className="disabled:cursor-not-allowed"
+			<Input className="border-gray-600 text-center" value={local?.codigo ?? componenteProp.codigo} disabled/>
+			<Input
+				className="placeholder:text-black border-gray-600"
 				placeholder={componenteProp.descricao}
 				type="search"
-				// onEmptied={() => console.log("limpo")}
 				list={componenteProp.descricao}
 				disabled={componenteProp.estoque !== 0}
 				onChange={(e) => setDescricao(e.target.value)}
@@ -45,19 +45,20 @@ export default function ComponenteProducao({
 					</option>
 				))}
 			</datalist>
-			<div>
+			{/* <div> */}
 				{local?.estoque == undefined &&
 				componenteProp.tipo == 6 &&
 				componenteProp.estoque <= 0 ? (
-					<Link to={`/producao/${componenteProp.codigo}`}>
-						<span>{decimal(local?.estoque ?? componenteProp.estoque, 3)}</span>
+					<Link className="border border-gray-600 rounded-md" to={`/producao/${componenteProp.codigo}`}>
+						<span className={local?.estoque ?? componenteProp.estoque ? " text-center" :"text-red-600 text-center"}>{decimal(local?.estoque ?? componenteProp.estoque, 3)}</span>
 					</Link>
 				) : (
-					<span>{decimal(local?.estoque ?? componenteProp.estoque, 3)}</span>
+					<Input className={local?.estoque ?? componenteProp.estoque ? "border-gray-600 text-center" :"text-red-600 border-gray-600 text-center"} disabled value={decimal(local?.estoque ?? componenteProp.estoque, 3)} />
 				)}
-			</div>
-			<input
+			{/* </div> */}
+			<Input
 				type="number"
+				className="border-gray-600"
 				max={local?.estoque ?? componenteProp.estoque}
 				min={0}
 				name={String(local?.codigo ?? componenteProp.codigo)}
