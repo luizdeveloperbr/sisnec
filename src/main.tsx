@@ -6,6 +6,7 @@ import Layout from "@/layout/componente";
 // import ProducaoRoute from "@/pages/Producao/route";
 import PadariaRoute from "@/pages/Padaria/route";
 import CadastroRoute from "@/pages/Cadastro/route";
+import ConfeitariaRoute from "@/pages/Confeitaria/route"
 
 const router = createBrowserRouter([
 	{
@@ -14,9 +15,10 @@ const router = createBrowserRouter([
 		children: [
 			// ProducaoRoute,
 			PadariaRoute,
-			CadastroRoute
+			ConfeitariaRoute
 		],
 	},
+	CadastroRoute,
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
