@@ -1,8 +1,11 @@
 import { IComponente } from "@/componentes/Componente/types";
+import Historico from "@/componentes/Historico";
 import Producao from "@/componentes/Producao";
 import Receita from "@/componentes/Receita"
 import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/shadcn/ui/tabs";
+
 import { useLoaderData } from "react-router-dom";
+
 
 export default function PadariaPage() {
 	const produtos =
@@ -25,7 +28,7 @@ export default function PadariaPage() {
 						<Producao produto={produto} />
 					</TabsContent>
 					<TabsContent value="historico">
-						<div>Historico</div>
+						<Historico codigoInterno={produto.codigo} />
 					</TabsContent>
 				</Tabs>
 			))}
