@@ -29,7 +29,11 @@ export default function ComponenteProducao({
 	}, [descricao]);
 	return (
 		<React.Fragment>
-			<Input className="border-gray-600 text-center" value={local?.codigo ?? componenteProp.codigo} disabled/>
+			<Input
+				className="border-gray-600 text-center"
+				value={local?.codigo ?? componenteProp.codigo}
+				disabled
+			/>
 			<Input
 				className="placeholder:text-black border-gray-600"
 				placeholder={componenteProp.descricao}
@@ -46,15 +50,34 @@ export default function ComponenteProducao({
 				))}
 			</datalist>
 			{/* <div> */}
-				{local?.estoque == undefined &&
-				componenteProp.tipo == 6 &&
-				componenteProp.estoque <= 0 ? (
-					<Link className="border border-gray-600 rounded-md" to={`/producao/${componenteProp.codigo}`}>
-						<span className={local?.estoque ?? componenteProp.estoque ? " text-center" :"text-red-600 text-center"}>{decimal(local?.estoque ?? componenteProp.estoque, 3)}</span>
-					</Link>
-				) : (
-					<Input className={local?.estoque ?? componenteProp.estoque ? "border-gray-600 text-center" :"text-red-600 border-gray-600 text-center"} disabled value={decimal(local?.estoque ?? componenteProp.estoque, 3)} />
-				)}
+			{local?.estoque == undefined &&
+			componenteProp.tipo == 6 &&
+			componenteProp.estoque <= 0 ? (
+				<Link
+					className="border border-gray-600 rounded-md"
+					to={`/producao/${componenteProp.codigo}`}
+				>
+					<span
+						className={
+							(local?.estoque ?? componenteProp.estoque)
+								? " text-center"
+								: "text-red-600 text-center"
+						}
+					>
+						{decimal(local?.estoque ?? componenteProp.estoque, 3)}
+					</span>
+				</Link>
+			) : (
+				<Input
+					className={
+						(local?.estoque ?? componenteProp.estoque)
+							? "border-gray-600 text-center"
+							: "text-red-600 border-gray-600 text-center"
+					}
+					disabled
+					value={decimal(local?.estoque ?? componenteProp.estoque, 3)}
+				/>
+			)}
 			{/* </div> */}
 			<Input
 				type="number"

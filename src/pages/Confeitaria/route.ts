@@ -16,7 +16,7 @@ const route: RouteObject = {
 		const receita = formData.get("receita");
 		const total_produzido = formData.get("total_produzido");
 		const timestamp = format(new Date(), "dd-MM-yyyy pp");
-		console.log(Array.from(formData.keys()))
+		console.log(Array.from(formData.keys()));
 		const componentes = Array.from(formData.entries()).filter(
 			([key]) => key !== "total_produzido" && key !== "receita",
 		);

@@ -120,6 +120,6 @@
 
 @layer base {
   h2 {
-    @apply font-bold text-[1.25em]
+    @apply font-bold text-[1.25em];
   }
 }

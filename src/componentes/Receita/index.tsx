@@ -3,10 +3,16 @@ import React from "react";
 import { ComponenteReceita, IComponente } from "../Componente/types";
 import { decimal, money } from "@/utils";
 
-const Receita = ({ produto }: {
-	produto: { codigo: number; descricao: string; rendimento: number; componentes: IComponente[] };
+const Receita = ({
+	produto,
+}: {
+	produto: {
+		codigo: number;
+		descricao: string;
+		rendimento: number;
+		componentes: IComponente[];
+	};
 }) => {
-
 	// Função para calcular a porcentagem RMS de um componente
 	const calcularPorcentagemRMS = (componente: ComponenteReceita) => {
 		if (!produto) return 0;

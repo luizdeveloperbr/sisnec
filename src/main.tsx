@@ -6,9 +6,9 @@ import Layout from "@/layout/componente";
 // import ProducaoRoute from "@/pages/Producao/route";
 import PadariaRoute from "@/pages/Padaria/route";
 import CadastroRoute from "@/pages/Cadastro/route";
-import ConfeitariaRoute from "@/pages/Confeitaria/route"
-import ReceitaRoute from "@/pages/Receitas/route"
-import MaterialUso from "@/pages/MaterialUso/route"
+import ConfeitariaRoute from "@/pages/Confeitaria/route";
+import ReceitaRoute from "@/pages/Receitas/route";
+import MaterialUso from "@/pages/MaterialUso/route";
 
 const router = createBrowserRouter([
 	{
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
 			PadariaRoute,
 			ConfeitariaRoute,
 			ReceitaRoute,
-			MaterialUso
+			MaterialUso,
 		],
 	},
 	CadastroRoute,

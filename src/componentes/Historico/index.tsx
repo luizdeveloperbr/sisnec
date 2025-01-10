@@ -3,13 +3,13 @@ import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@/shadcn/ui/collapsible"
+} from "@/shadcn/ui/collapsible";
 
 import { useEffect, useState } from "react";
 import { Producao as ProducaoType } from "@/componentes/Producao/types";
 import { decimal } from "@/utils";
 const Historico = ({ codigoInterno }: { codigoInterno: number }) => {
-	const [produzido, setProduzido] = useState<ProducaoType[]>([])
+	const [produzido, setProduzido] = useState<ProducaoType[]>([]);
 	useEffect(() => {
 		async function bootstrap() {
 			const db = await Database.load("sqlite:data.db");
@@ -32,24 +32,44 @@ const Historico = ({ codigoInterno }: { codigoInterno: number }) => {
 					WHERE p.codigo = $1
 					GROUP BY p.codigo, p.data;
 		
-		`, [codigoInterno]);
-			setProduzido(result)
+		`,
+				[codigoInterno],
+			);
+			setProduzido(result);
 		}
-		bootstrap()
-	}, [])
+		bootstrap();
+	}, []);
 
 	return (
 		<>
-			{produzido.map(prod => {
-				const comps: {descricao: string, componente_id: number, medida: number}[] = JSON.parse(prod.componentes)
-				return(<Collapsible className="border border-black rounded-sm text-lg my-1">
-				<CollapsibleTrigger className="grid grid-cols-4 w-full"><div>{prod?.receita_codigo}</div><div>{prod?.receita}</div><div>{decimal(prod?.total_produzido,3)} KG</div><div>{prod.data_producao}</div></CollapsibleTrigger>
-				<CollapsibleContent className="grid grid-cols-4 w-full text-center">
-					{comps.map(item => <><div>{item.componente_id}</div><div>{item.descricao}</div><div>{decimal(item.medida, 3)} KG</div><div>-</div></>)}
-				</CollapsibleContent>
-			</Collapsible>)}
-)}
+			{produzido.map((prod) => {
+				const comps: {
+					descricao: string;
+					componente_id: number;
+					medida: number;
+				}[] = JSON.parse(prod.componentes);
+				return (
+					<Collapsible className="border border-black rounded-sm text-lg my-1">
+						<CollapsibleTrigger className="grid grid-cols-4 w-full">
+							<div>{prod?.receita_codigo}</div>
+							<div>{prod?.receita}</div>
+							<div>{decimal(prod?.total_produzido, 3)} KG</div>
+							<div>{prod.data_producao}</div>
+						</CollapsibleTrigger>
+						<CollapsibleContent className="grid grid-cols-4 w-full text-center">
+							{comps.map((item) => (
+								<>
+									<div>{item.componente_id}</div>
+									<div>{item.descricao}</div>
+									<div>{decimal(item.medida, 3)} KG</div>
+									<div>-</div>
+								</>
+							))}
+						</CollapsibleContent>
+					</Collapsible>
+				);
+			})}
 		</>
-	)
-}
-export default Historico
+	);
+};
+export default Historico;
