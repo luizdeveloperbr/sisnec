@@ -14,6 +14,11 @@ function LayoutPage() {
 				</li>
 				<li>
 					<Button asChild>
+						<Link to="/material-uso">96</Link>
+					</Button>
+				</li>
+				<li>
+					<Button asChild>
 						<Link to="/padaria">Padaria</Link>
 					</Button>
 				</li>
@@ -25,6 +30,11 @@ function LayoutPage() {
 				<li>
 					<Button asChild>
 						<Link to="/cadastro">Cadastro</Link>
+					</Button>
+				</li>
+				<li>
+					<Button asChild>
+						<Link to="/receita">Receitas</Link>
 					</Button>
 				</li>
 			</ul>

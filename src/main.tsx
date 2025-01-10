@@ -7,6 +7,8 @@ import Layout from "@/layout/componente";
 import PadariaRoute from "@/pages/Padaria/route";
 import CadastroRoute from "@/pages/Cadastro/route";
 import ConfeitariaRoute from "@/pages/Confeitaria/route"
+import ReceitaRoute from "@/pages/Receitas/route"
+import MaterialUso from "@/pages/MaterialUso/route"
 
 const router = createBrowserRouter([
 	{
@@ -15,7 +17,9 @@ const router = createBrowserRouter([
 		children: [
 			// ProducaoRoute,
 			PadariaRoute,
-			ConfeitariaRoute
+			ConfeitariaRoute,
+			ReceitaRoute,
+			MaterialUso
 		],
 	},
 	CadastroRoute,

@@ -9,7 +9,7 @@ import {
 } from "@/shadcn/ui/table";
 import { ScrollArea } from "@/shadcn/ui/scroll-area";
 import { decimal, money } from "@/utils";
-import { useLoaderData, Form } from "react-router-dom";
+import { useLoaderData, Form, Link } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
 import { Button } from "@/shadcn/ui/button";
 
@@ -17,13 +17,17 @@ export default function CadastroPage() {
     const insumos = useLoaderData<Componente[]>();
     return (
         <>
+        <ul>
+            <li><Button asChild><Link to="/">Home</Link></Button></li>
+        </ul>
             <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Codigo</TableHead>
                         <TableHead>Descrição</TableHead>
+                        <TableHead>Embalagem</TableHead>
                         <TableHead>Estoque</TableHead>
-                        <TableHead className="text-right">Custo</TableHead>
+                        <TableHead>Custo</TableHead>
                     </TableRow>
                 </TableHeader>
             </Table>
@@ -31,11 +35,12 @@ export default function CadastroPage() {
                 <Table>
                     <TableBody>
                         {insumos.map((insumo) => (
-                            <TableRow>
+                            <TableRow key={insumo.codigo}>
                                 <TableCell className="font-medium">{insumo.codigo}</TableCell>
                                 <TableCell>{insumo.descricao}</TableCell>
-                                <TableCell>{decimal(insumo.estoque, 3)}/{insumo.embalagem}</TableCell>
-                                <TableCell className="text-right">
+                                <TableCell>{insumo.embalagem ?? "##"}|{decimal(insumo.peso_liquido, 3)}</TableCell>
+                                <TableCell>{decimal(insumo.estoque, 3)}</TableCell>
+                                <TableCell>
                                     {money(insumo.custo)}
                                 </TableCell>
                             </TableRow>
@@ -47,7 +52,8 @@ export default function CadastroPage() {
                 <Input required name="codigo" type="number" placeholder="codigo"></Input>
                 <Input required name="descricao" placeholder="descrição"></Input>
                 <Input name="estoque" type="number" placeholder="estoque"></Input>
-                <Input name="custo" type="number" placeholder="custo"></Input>
+                <Input name="peso_liquido" placeholder="peso_liquido" />
+                <Input name="custo" type="number" step="0.001" placeholder="custo"></Input>
                 <Button type="submit">send</Button>
             </Form>
         </>
