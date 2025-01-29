@@ -9,6 +9,7 @@ import CadastroRoute from "@/pages/Cadastro/route";
 import ConfeitariaRoute from "@/pages/Confeitaria/route";
 import ReceitaRoute from "@/pages/Receitas/route";
 import MaterialUso from "@/pages/MaterialUso/route";
+import ProdutoRoute from "@/pages/Produto/route"
 
 const router = createBrowserRouter([
 	{
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
 			ConfeitariaRoute,
 			ReceitaRoute,
 			MaterialUso,
+			ProdutoRoute
 		],
 	},
 	CadastroRoute,
