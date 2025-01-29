@@ -1,6 +1,6 @@
 import "./Producao.css";
 import { Button } from "@/shadcn/ui/button";
-import Componente from "@/componentes/Componente";
+import {ComponenteProducao} from "@/componentes/Componente";
 import { IComponente } from "@/componentes/Componente/types";
 import { useFetcher } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
@@ -44,7 +44,7 @@ const ProducaoComponente = ({
 			/>
 			{produto.componentes?.map((componente) => {
 				return (
-					<Componente key={componente.codigo} componenteProp={componente} />
+					<ComponenteProducao key={componente.codigo} componenteProp={componente} />
 				);
 			})}
 			<div className="producao-rendimento">RENDIMENTO {">>>>"}</div>
