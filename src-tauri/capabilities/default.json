@@ -5,10 +5,12 @@
   "windows": [
     "main"
   ],
+  "platforms": ["windows"],
   "permissions": [
     "core:default",
     "shell:allow-open",
     "sql:default",
-    "sql:allow-execute"
+    "sql:allow-execute",
+    "sql:allow-load"
   ]
 }
