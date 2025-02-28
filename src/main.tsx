@@ -10,6 +10,7 @@ import ConfeitariaRoute from "@/pages/Confeitaria/route";
 import ReceitaRoute from "@/pages/Receitas/route";
 import MaterialUso from "@/pages/MaterialUso/route";
 import ProdutoRoute from "@/pages/Produto/route"
+import HortiRoute from "@/pages/Horti/route"
 
 const router = createBrowserRouter([
 	{
@@ -21,10 +22,11 @@ const router = createBrowserRouter([
 			ConfeitariaRoute,
 			ReceitaRoute,
 			MaterialUso,
-			ProdutoRoute
+			ProdutoRoute,
+			CadastroRoute,
+			HortiRoute
 		],
 	},
-	CadastroRoute,
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
