@@ -24,5 +24,6 @@ export interface IComponente {
 	custo: number;
 	estoque: number;
 	embalagem: string;
+	componente_required: number;
 	tipo: number;
 }

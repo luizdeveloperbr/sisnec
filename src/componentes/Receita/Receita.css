@@ -66,6 +66,11 @@ h2 {
 	grid-column-start: 2;
 	grid-column-end: 4;
 }
+
+.rendimento-a {
+	grid-column-start: 2;
+	grid-column-end: 5;
+}
 .componente-descricao {
 	text-align: start;
 	padding-left: 4px;

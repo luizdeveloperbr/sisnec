@@ -1,5 +1,5 @@
 import Database from "@tauri-apps/plugin-sql";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { IComponente } from "./types";
 import { Link } from "react-router-dom";
 import { decimal, money } from "@/utils";
@@ -50,10 +50,9 @@ export function ComponenteProducao({
 					</option>
 				))}
 			</datalist>
-			{/* <div> */}
 			{local?.estoque == undefined &&
-			componenteProp.tipo == 6 &&
-			componenteProp.estoque <= 0 ? (
+				componenteProp.tipo == 6 &&
+				componenteProp.estoque <= 0 ? (
 				<Link
 					className="border border-gray-600 rounded-md"
 					to={`/produto/${componenteProp.codigo}`}
@@ -79,10 +78,10 @@ export function ComponenteProducao({
 					value={decimal(local?.estoque ?? componenteProp.estoque, 3)}
 				/>
 			)}
-			{/* </div> */}
 			<Input
 				type="number"
 				className="border-gray-600"
+				required={Boolean(componenteProp.componente_required)}
 				max={local?.estoque ?? componenteProp.estoque}
 				min={0}
 				name={String(local?.codigo ?? componenteProp.codigo)}
@@ -96,63 +95,69 @@ export function ComponenteCreateReceita({
 	componenteProp,
 }: { componenteProp: IComponente }) {
 	const [descricao, setDescricao] = useState<string>();
-	const [componentes, setComponentes] = useState<IComponente[]>([]);
 	const [local, setLocal] = useState<IComponente>();
-	const [listComponents,setListComponents] = useState<IComponente[]>()
-	// procurar pela descrição
+	const [componentes,  setComponentes] = useState<IComponente[]>([])
+
+	const medida = useRef<HTMLInputElement>(null)
+
 	useEffect(() => {
 		async function bootstrap() {
-			let descricaoInput = "%" + descricao + "%";
+			// let descricaoInput = "%" + descricao + "%";
 			const db = await Database.load("sqlite:data.db");
 			const queryComponente: IComponente[] = await db.select(
-				"select * from Componente where codigo like $1",
-				[descricaoInput],
+				"select * from Componente where codigo = $1",
+				[descricao],
 			);
 			setLocal(queryComponente[0]);
-			// if (queryComponente.length !== 1) {
-			// 	setComponentes(queryComponente);
-			// } else {
-			// }
 		}
 		bootstrap();
 	}, [descricao]);
 
 	function handleAddComponent() {
-		setListComponents(old => [local,...old])
-		console.log("add",listComponents)
+		let med = Number(medida.current?.value.replace(",", "."))
+		let data = Object.assign({medida: med}, local)
+		console.log("local", local)
+		setComponentes(old => [...old, data])
+		setLocal(undefined)
 	}
 
 	return (
 		<React.Fragment>
+			{componentes?.map(i => <>
+					<div key={i.codigo}>{i.codigo}</div>
+					<div>{i.descricao}</div>
+					<div>{i.embalagem}</div>
+					<div>{i.peso_liquido}</div>
+					<div>{i.medida}</div>
+					<div>{money(i.custo)}</div>
+					<div>{money(i.custo / i.medida)}</div>
+					<div>***</div>
+				</>)}
 			<Input
-				className="border-gray-600 text-center w-40"
-				// value={local?.codigo ?? componenteProp.codigo}
-				// disabled
+				className="border-gray-600 text-center"
 				onChange={(e) => setDescricao(e.target.value)}
+				onKeyDown={e => {
+					if(e.key === "Enter"){
+						console.log("enter")
+						medida.current?.focus()
+					}
+				}}
 			/>
 			<Input
 				className="placeholder:text-black border-gray-600"
 				placeholder={local?.descricao ?? componenteProp.descricao}
 				type="text"
 				disabled
-				// list={componenteProp.descricao}
-				// disabled={componenteProp.estoque !== 0}
 			/>
-			{/* <datalist id={componenteProp.descricao}>
-				{componentes?.map((c, i) => (
-					<option key={i} value={c.descricao}>
-						{c.codigo}
-					</option>
-				))}
-			</datalist> */}
 			<div>{local?.embalagem}</div>
-			<div>{decimal(local?.peso_liquido || 0,3)}</div>
+			<div>{decimal(local?.peso_liquido || 0, 3)}</div>
 			<Input
-				placeholder="quantidade"
+				// placeholder="quantidade"
 				step="0.001"
-				className="w-40"
-					// value={decimal(local?.estoque ?? componenteProp.estoque, 3)}
-				/>
+				className="border-gray-600"
+				ref={medida}
+			// value={decimal(local?.estoque ?? componenteProp.estoque, 3)}
+			/>
 			<div>{money(local?.custo || 0)}</div>
 			<div></div>
 			<Button onClick={handleAddComponent}>+</Button>
