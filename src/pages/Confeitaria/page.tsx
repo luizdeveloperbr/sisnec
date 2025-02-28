@@ -1,5 +1,6 @@
 import { IComponente } from "@/componentes/Componente/types";
 import Producao from "@/componentes/Producao";
+import { Producao as ProducaoType } from "@/componentes/Producao/types";
 import Receita from "@/componentes/Receita";
 import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/shadcn/ui/tabs";
 import { useLoaderData } from "react-router-dom";
@@ -13,6 +14,7 @@ export default function ConfeitariaPage() {
 				descricao: string;
 				rendimento: number;
 				componentes: IComponente[];
+				historico: ProducaoType[]
 			}[]
 		>();
 	return (
@@ -31,7 +33,7 @@ export default function ConfeitariaPage() {
 						<Producao produto={produto} />
 					</TabsContent>
 					<TabsContent value="historico">
-						<Historico codigoInterno={produto.codigo} />
+						<Historico produto={produto} />
 					</TabsContent>
 				</Tabs>
 			))}

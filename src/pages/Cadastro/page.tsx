@@ -9,7 +9,7 @@ import {
 } from "@/shadcn/ui/table";
 import { ScrollArea } from "@/shadcn/ui/scroll-area";
 import { decimal, money } from "@/utils";
-import { useLoaderData, Form, Link } from "react-router-dom";
+import { useLoaderData, Form } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
 import { Button } from "@/shadcn/ui/button";
 
@@ -17,13 +17,6 @@ export default function CadastroPage() {
 	const insumos = useLoaderData<Componente[]>();
 	return (
 		<>
-			<ul>
-				<li>
-					<Button asChild>
-						<Link to="/">Home</Link>
-					</Button>
-				</li>
-			</ul>
 			<Table>
 				<TableHeader>
 					<TableRow>

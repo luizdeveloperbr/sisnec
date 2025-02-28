@@ -5,23 +5,18 @@ import Database from "@tauri-apps/plugin-sql";
 import {ComponenteCreateReceita} from "@/componentes/Componente";
 
 const ReceitaPage = () => {
-	const [componenteReceita, setComponenteReceita] = useState<IComponente[]>([]);
-	const [componente, setComponente] = useState<IComponente>();
+
 	const [produto, setProduto] = useState<{
 		codigo: number;
 		descricao: string;
 	}>();
 
-	function handleNewComponente() {
-		setComponenteReceita((old) => [componente, ...old]);
-	}
-
 	async function findReceita(cod: any, setFunc: (arg0: any) => void) {
-		let descricaoInput = "%" + cod + "%";
+		// let descricaoInput = "%" + cod + "%";
 		const db = await Database.load("sqlite:data.db");
 		const queryComponente: IComponente[] = await db.select(
-			"select * from Componente where codigo like $1",
-			[descricaoInput],
+			"select * from Componente where codigo = $1",
+			[cod],
 		);
 		setFunc(queryComponente[0]);
 	}
@@ -29,12 +24,11 @@ const ReceitaPage = () => {
 	return (
 		<div className="receita-wrap">
 			<Input
-				className="h-receita-codigo w-40 border-gray-600"
-				placeholder="cod_receita"
+				className="border-gray-600"
 				onChange={(e) => findReceita(e.target.value,setProduto)}
 			/>
 			<div className="h-receita-descricao border-gray-600">
-				{produto?.descricao ?? "S/DESCRICAO"}
+				{produto?.descricao}
 			</div>
 			<div className="h-embalagem-tipo">embalagem</div>
 			<div className="h-quantidade">QNT</div>
@@ -50,8 +44,14 @@ const ReceitaPage = () => {
 			<div className="h-componente-codigo">codigo</div>
 			<div className="h-componente-descricao">descrição</div>
 
-			<ComponenteCreateReceita componenteProp={{codigo: 0,custo: 0,descricao: "string",embalagem: "",estoque:0,medida: 0,peso_liquido: 0,tipo: 1}} />
-
+			<ComponenteCreateReceita componenteProp={{codigo: 0,componente_required: 0,custo: 0,descricao: "string",embalagem: "",estoque:0,medida: 0,peso_liquido: 0,tipo: 1}} />
+<div></div>
+			<div className="rendimento-a">RENDIMENTO {">>>>"}</div>
+				<Input className="border-gray-600" />
+			{/* <div></div> */}
+			<div></div>
+			<div></div>
+			<div>{/*money(somaTotal)*/}X</div>
 		</div>
 	);
 };
