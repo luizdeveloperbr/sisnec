@@ -1,10 +1,10 @@
-import { IComponente } from "@/componentes/Componente/types";
+import { useLoaderData } from "react-router-dom";
+import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/shadcn/ui/tabs";
 import Historico from "@/componentes/Historico";
 import Producao from "@/componentes/Producao";
 import Receita from "@/componentes/Receita";
-import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/shadcn/ui/tabs";
-
-import { useLoaderData } from "react-router-dom";
+import { IComponente } from "@/componentes/Componente/types";
+import { Producao as ProducaoType } from "@/componentes/Producao/types";
 
 export default function PadariaPage() {
 	const produtos =
@@ -14,6 +14,7 @@ export default function PadariaPage() {
 				descricao: string;
 				rendimento: number;
 				componentes: IComponente[];
+				historico: ProducaoType[]
 			}[]
 		>();
 	return (
@@ -32,7 +33,7 @@ export default function PadariaPage() {
 						<Producao produto={produto} />
 					</TabsContent>
 					<TabsContent value="historico">
-						<Historico codigoInterno={produto.codigo} />
+						<Historico produto={produto} />
 					</TabsContent>
 				</Tabs>
 			))}

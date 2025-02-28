@@ -1,21 +1,24 @@
 import Database from "@tauri-apps/plugin-sql";
-import { getReceita, getComponente } from "@/database/lib";
+import { getComponente, getHistorico, getReceita } from "@/database/lib";
 import MaterialUso from "./page";
 import { RouteObject } from "react-router";
+import { format } from "date-fns";
 import { IReceita } from "@/componentes/Receita/types";
 import { IComponente } from "@/componentes/Componente/types";
-import { format } from "date-fns";
+import { Producao as ProducaoType } from "@/componentes/Producao/types";
+
+var ID = 96
 
 const route: RouteObject = {
 	path: "/material-uso",
 	Component: MaterialUso,
-	id: "96",
+	id: `${ID}`,
 	action: async ({ request }) => {
 		const db = await Database.load("sqlite:data.db");
 		const formData = await request.formData();
 		const receita = formData.get("receita");
 		const total_produzido = formData.get("total_produzido");
-		const timestamp = format(new Date(), "dd-MM-yyyy pp");
+		const timestamp = format(new Date(), "yyyy-MM-dd H:mm:ss");
 		const componentes = Array.from(formData.entries()).filter(
 			([key]) => key !== "total_produzido" && key !== "receita",
 		);
@@ -49,18 +52,20 @@ const route: RouteObject = {
 		return null;
 	},
 	loader: async () => {
-		const db = await Database.load("sqlite:data.db");
-		const codigos: { codigo: number }[] = await db.select(
-			"select codigo from Receita where secao = 96",
-		);
-		const produtos = await Promise.all(
-			codigos.map(async (element) => {
-				const receita: IReceita = await getReceita(element.codigo);
-				const componentes: IComponente[] = await getComponente(element.codigo);
-				return { ...receita, componentes };
-			}),
-		);
-		return produtos;
-	},
+			const db = await Database.load("sqlite:data.db");
+			const codigos: { codigo: number }[] = await db.select(
+				`select codigo from Receita where secao = ${ID}`,
+			);
+			const produtos = await Promise.all(
+				codigos.map(async (element) => {
+					const receita: IReceita = await getReceita(element.codigo);
+					const componentes: IComponente[] = await getComponente(element.codigo);
+					const historico: ProducaoType[] = await getHistorico(element.codigo)
+					return { ...receita, componentes, historico };
+				}),
+			);
+	
+			return produtos;
+		}
 };
 export default route;

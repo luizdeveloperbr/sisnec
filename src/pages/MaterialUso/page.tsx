@@ -1,4 +1,5 @@
 import { IComponente } from "@/componentes/Componente/types";
+import { Producao as ProducaoType } from "@/componentes/Producao/types";
 import Historico from "@/componentes/Historico";
 import Producao from "@/componentes/Producao";
 import Receita from "@/componentes/Receita";
@@ -14,6 +15,7 @@ export default function PadariaPage() {
 				descricao: string;
 				rendimento: number;
 				componentes: IComponente[];
+				historico: ProducaoType[]
 			}[]
 		>();
 	return (
@@ -32,7 +34,7 @@ export default function PadariaPage() {
 						<Producao produto={produto} />
 					</TabsContent>
 					<TabsContent value="historico">
-						<Historico codigoInterno={produto.codigo} />
+						<Historico produto={produto} />
 					</TabsContent>
 				</Tabs>
 			))}
