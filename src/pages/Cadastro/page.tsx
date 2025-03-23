@@ -1,4 +1,3 @@
-import { Componente } from "@/componentes/Componente/types";
 import {
 	Table,
 	TableBody,
@@ -7,16 +6,41 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/shadcn/ui/table";
-import { ScrollArea } from "@/shadcn/ui/scroll-area";
+// import { ScrollArea } from "@/shadcn/ui/scroll-area";
 import { decimal, money } from "@/utils";
-import { useLoaderData, Form } from "react-router-dom";
+import { useLoaderData, useFetcher } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
 import { Button } from "@/shadcn/ui/button";
+import { findComponente } from "@/database/lib";
+import { useState, useRef } from "react";
+
+interface Componente {
+	codigo: number;
+	descricao: string;
+	peso_liquido: number;
+	embalagem: string;
+	custo: number;
+	estoque: number;
+	tipo: number;
+}
 
 export default function CadastroPage() {
+	const [local, setLocal] = useState<Pick<Componente, "codigo" | "descricao">>()
 	const insumos = useLoaderData<Componente[]>();
+	const fetch = useFetcher()
+	const codigoRef = useRef<HTMLInputElement>(null)
+
+	function handlerSubmit(event: React.FormEvent<HTMLFormElement>){
+		event.preventDefault()
+		const form = event.currentTarget
+		fetch.submit(form)
+		setLocal(undefined)
+		form.reset()
+		codigoRef.current?.focus()
+}
 	return (
-		<>
+	<>
+			{/* <ScrollArea className="h-[500px]" > */}
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -27,16 +51,13 @@ export default function CadastroPage() {
 						<TableHead>Custo</TableHead>
 					</TableRow>
 				</TableHeader>
-			</Table>
-			<ScrollArea className="h-[500px]">
-				<Table>
 					<TableBody>
 						{insumos.map((insumo) => (
 							<TableRow key={insumo.codigo}>
 								<TableCell className="font-medium">{insumo.codigo}</TableCell>
 								<TableCell>{insumo.descricao}</TableCell>
 								<TableCell>
-									{insumo.embalagem ?? "##"}|{decimal(insumo.peso_liquido, 3)}
+									{insumo.embalagem.split('/')[0]} ~ {decimal(insumo.peso_liquido, 3)}
 								</TableCell>
 								<TableCell>{decimal(insumo.estoque, 3)}</TableCell>
 								<TableCell>{money(insumo.custo)}</TableCell>
@@ -44,25 +65,20 @@ export default function CadastroPage() {
 						))}
 					</TableBody>
 				</Table>
-			</ScrollArea>
-			<Form className="grid grid-cols-5 gap-2" action="/cadastro" method="post">
+			{/* </ScrollArea> */}
+			<fetch.Form className="grid grid-cols-4 gap-2" onSubmit={handlerSubmit} method="post">
 				<Input
-					required
 					name="codigo"
-					type="number"
 					placeholder="codigo"
-				></Input>
-				<Input required name="descricao" placeholder="descrição"></Input>
-				<Input name="estoque" type="number" placeholder="estoque"></Input>
-				<Input name="peso_liquido" placeholder="peso_liquido" />
-				<Input
-					name="custo"
 					type="number"
-					step="0.001"
-					placeholder="custo"
+					required
+					ref={codigoRef}
+					onChange={(e) => findComponente(e.target.value,setLocal)}
 				></Input>
+				<Input placeholder={local?.descricao ?? 'descriçao'} className="placeholder:text-black" />
+				<Input name="estoque" required type="number" placeholder="estoque"></Input>
 				<Button type="submit">send</Button>
-			</Form>
+			</fetch.Form>
 		</>
 	);
 }

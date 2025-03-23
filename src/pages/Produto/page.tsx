@@ -1,9 +1,9 @@
-import ProducaoComponente from "@/componentes/Producao"
-import { useLoaderData } from "react-router-dom"
+import ProducaoComponente from "@/componentes/Producao";
+import { useLoaderData } from "react-router-dom";
 
 const ProdutoPage = () => {
-    const data = useLoaderData<any>()
-    return (<ProducaoComponente produto={data} />)
-}
+	const data = useLoaderData<any>();
+	return <ProducaoComponente produto={data} />;
+};
 
-export default ProdutoPage
+export default ProdutoPage;

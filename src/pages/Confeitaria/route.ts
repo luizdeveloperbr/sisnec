@@ -3,8 +3,20 @@ import { getReceita, getComponente } from "@/database/lib";
 import ConfeitariaPage from "./page";
 import { RouteObject } from "react-router";
 import { IReceita } from "@/componentes/Receita/types";
-import { IComponente } from "@/componentes/Componente/types";
 import { format } from "date-fns";
+
+
+interface IComponente {
+	codigo: number;
+	descricao: string;
+	peso_liquido: number;
+	medida: number;
+	custo: number;
+	estoque: number;
+	embalagem: string;
+	componente_required: number;
+	tipo: number;
+}
 
 const route: RouteObject = {
 	path: "/confeitaria",
