@@ -1,9 +1,105 @@
+import React, { useState } from "react";
 import "./Producao.css";
 import { Button } from "@/shadcn/ui/button";
-import {ComponenteProducao} from "@/componentes/Componente";
-import { IComponente } from "@/componentes/Componente/types";
-import { useFetcher } from "react-router-dom";
+import { Link, useFetcher } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
+import Database from "@tauri-apps/plugin-sql";
+import { decimal } from "@/utils";
+
+interface IComponente {
+	codigo: number;
+	descricao: string;
+	peso_liquido: number;
+	medida: number;
+	custo: number;
+	estoque: number;
+	embalagem: string;
+	componente_required: number;
+	tipo: number;
+} 
+
+function ComponenteProducao({
+	componenteProp,
+}: { componenteProp: IComponente }) {
+	const [componentes, setComponentes] = useState<IComponente[]>([]);
+	const [local, setLocal] = useState<IComponente>();
+
+	async function findComponente(e: any, fnComponente: (arg0: any) => void, fnLocal: (arg0: any) => void){
+		let descricaoInput = "%" + e + "%";
+		const db = await Database.load("sqlite:data.db");
+		const queryComponente: IComponente[] = await db.select(
+			"select * from Componente where descricao like $1",
+			[descricaoInput],
+		);
+		if (queryComponente.length !== 1) {
+			fnComponente(queryComponente);
+		} else {
+			fnLocal(queryComponente[0]);
+		}
+	}
+
+	return (
+		<React.Fragment>
+			<Input
+				className="border-gray-600 text-center"
+				value={local?.codigo ?? componenteProp.codigo}
+				disabled
+			/>
+			<Input
+				className="text-cyan-600 placeholder:text-black border-gray-600"
+				placeholder={componenteProp.descricao}
+				type="search"
+				list={componenteProp.descricao}
+				disabled={componenteProp.estoque !== 0}
+				onChange={(e) => findComponente(e.target.value,setComponentes,setLocal)}
+			/>
+			<datalist id={componenteProp.descricao}>
+				{componentes?.map((c, i) => (
+					<option key={i} value={c.descricao}>
+						{c.codigo}
+					</option>
+				))}
+			</datalist>
+			{local?.estoque == undefined &&
+			componenteProp.tipo == 6 &&
+			componenteProp.estoque <= 0 ? (
+				<Link
+					className="border border-gray-600 rounded-md"
+					to={`/produto/${componenteProp.codigo}`}
+				>
+					<span
+						className={
+							(local?.estoque ?? componenteProp.estoque)
+								? " text-center"
+								: "text-red-600 text-center"
+						}
+					>
+						{decimal(local?.estoque ?? componenteProp.estoque, 3)}
+					</span>
+				</Link>
+			) : (
+				<Input
+					className={
+						(local?.estoque ?? componenteProp.estoque)
+							? "border-gray-600 text-center"
+							: "text-red-600 border-gray-600 text-center"
+					}
+					disabled
+					value={decimal(local?.estoque ?? componenteProp.estoque, 3)}
+				/>
+			)}
+			<Input
+				type="number"
+				className="border-gray-600"
+				required={Boolean(componenteProp.componente_required)}
+				max={local?.estoque ?? componenteProp.estoque}
+				min={0}
+				name={String(local?.codigo ?? componenteProp.codigo)}
+				step="0.001"
+			/>
+		</React.Fragment>
+	);
+}
 
 const ProducaoComponente = ({
 	produto,
@@ -44,7 +140,10 @@ const ProducaoComponente = ({
 			/>
 			{produto.componentes?.map((componente) => {
 				return (
-					<ComponenteProducao key={componente.codigo} componenteProp={componente} />
+					<ComponenteProducao
+						key={componente.codigo}
+						componenteProp={componente}
+					/>
 				);
 			})}
 			<div className="producao-rendimento">RENDIMENTO {">>>>"}</div>

@@ -1,7 +1,26 @@
 import "./Receita.css";
 import React from "react";
-import { ComponenteReceita, IComponente } from "../Componente/types";
 import { decimal, money } from "@/utils";
+
+ type ComponenteReceita = {
+	codigo: number;
+	descricao: string;
+	peso_liquido: number;
+	medida: number;
+	custo: number;
+};
+
+ interface IComponente {
+	codigo: number;
+	descricao: string;
+	peso_liquido: number;
+	medida: number;
+	custo: number;
+	estoque: number;
+	embalagem: string;
+	componente_required: number;
+	tipo: number;
+}
 
 const Receita = ({
 	produto,
