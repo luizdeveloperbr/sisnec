@@ -1,0 +1,9 @@
+.item:nth-child(odd) {
+    @apply bg-slate-200
+}
+.grid-cols-historico {
+    grid-template-columns: 20% 40% 15% 25%;
+}
+.item {
+    @apply font-thin italic
+}

@@ -1,0 +1,73 @@
+h2 {
+	margin: 0;
+}
+
+.form-wrap {
+	display: grid;
+	padding: 10px;
+	gap: 1px;
+	/* margin: 0 16px 16px 16px; */
+	font-size: 1.75rem;
+	border-radius: 8px;
+	text-transform: uppercase;
+	text-align: center;
+	grid-template-areas:
+		"c_receita d_receita emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido"
+		"comp-cod comp-desc emb1 emb1 qtd cst-emb porc-emb-rms custo-produzido";
+}
+
+.form-wrap > div {
+	border: 1px solid black;
+	padding: 0 5px;
+}
+
+.h-receita-codigo {
+	grid-area: c_receita;
+	place-content: center;
+}
+
+.h-receita-descricao {
+	grid-area: d_receita;
+}
+
+.h-embalagem-tipo {
+	grid-area: emb1;
+	place-content: center;
+}
+
+.h-quantidade {
+	grid-area: qtd;
+	place-content: center;
+}
+
+.h-custo-embalagem {
+	grid-area: cst-emb;
+	place-content: center;
+}
+
+.h-porc-emb-rms {
+	grid-area: porc-emb-rms;
+	place-content: center;
+}
+
+.h-custo-produzido {
+	grid-area: custo-produzido;
+	place-content: center;
+}
+
+.h-componente-codigo {
+	grid-area: comp-cod;
+}
+
+.h-componente-descricao {
+	grid-area: comp-desc;
+}
+/* .rendimento {
+	grid-column-start: 2;
+	grid-column-end: 4;
+} */
+
+.rendimento-a {
+	grid-column-start: 2;
+	grid-column-end: 5;
+}
