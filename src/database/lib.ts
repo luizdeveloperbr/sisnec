@@ -1,7 +1,17 @@
 import Database from "@tauri-apps/plugin-sql";
 import { IReceita } from "@/componentes/Receita/types";
-import { IComponente } from "@/componentes/Componente/types";
 import { Producao as ProducaoType } from "@/componentes/Producao/types";
+interface IComponente {
+	codigo: number;
+	descricao: string;
+	peso_liquido: number;
+	medida: number;
+	custo: number;
+	estoque: number;
+	embalagem: string;
+	componente_required: number;
+	tipo: number;
+}
 
 
 export async function getReceita(codigoInterno: number) {
@@ -21,7 +31,7 @@ export async function getComponente(codigoInterno: number) {
 	return data;
 }
 
-export async function getHistorico(codigoInterno:  number){
+export async function getHistorico(codigoInterno: number) {
 	const db = await Database.load("sqlite:data.db");
 	const data: ProducaoType[] = await db.select(
 		`
@@ -46,6 +56,13 @@ export async function getHistorico(codigoInterno:  number){
 		[codigoInterno],
 	);
 
-	return data
+	return data;
 }
-
+export async function findComponente(codigo: string, fnLocal: (arg0: any) => void) {
+		const db = await Database.load("sqlite:data.db");
+		const queryComponente: IComponente[] = await db.select(
+			"select * from Componente where codigo = $1",
+			[codigo],
+		);
+		fnLocal(queryComponente[0]);
+	}
