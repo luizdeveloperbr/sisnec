@@ -4,4 +4,6 @@ export type Producao = {
 	receita: string;
 	total_produzido: number;
 	componentes: string;
+	embalagem: string;
+	peso_liquido: number;
 };

@@ -18,7 +18,6 @@ interface IComponente {
 	tipo: number;
 }
 
-
 const route: RouteObject = {
 	path: "/padaria",
 	Component: PadariaPage,

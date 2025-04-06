@@ -5,7 +5,6 @@ import { RouteObject } from "react-router";
 import { IReceita } from "@/componentes/Receita/types";
 import { format } from "date-fns";
 
-
 interface IComponente {
 	codigo: number;
 	descricao: string;

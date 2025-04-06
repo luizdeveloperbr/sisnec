@@ -8,7 +8,7 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let migrations = vec![
+    let _migrations = vec![
         Migration {
             version: 1,
             description: "create table componente",
@@ -69,14 +69,14 @@ pub fn run() {
         },
         Migration {
             version: 5,
-            description: "insert receita",
+            description: "insert componente",
             sql: "INSERT OR IGNORE INTO Componente (codigo, descricao, peso_liquido, tipo) VALUES (12467, 'pão rech c/ queijo', 1.0, 6);",
             kind: MigrationKind::Up,
         },
         Migration {
             version: 6,
-            description: "insert medidas",
-            sql: "INSERT OR IGNORE INTO Receita (codigo, rendimento) VALUES (12467, 12);",
+            description: "insert receita",
+            sql: "INSERT OR IGNORE INTO Receita (codigo, rendimento, secao) VALUES (12467, 12, 35);",
             kind: MigrationKind::Up,
         },
         Migration {
@@ -110,7 +110,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(
             tauri_plugin_sql::Builder::new()
-                .add_migrations("sqlite:data.db", migrations)
+                // .add_migrations("sqlite:data.db", migrations)
                 .build(),
         )
         .plugin(tauri_plugin_shell::init())

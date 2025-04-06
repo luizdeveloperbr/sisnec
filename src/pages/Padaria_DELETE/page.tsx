@@ -1,10 +1,10 @@
-import { Producao as ProducaoType } from "@/componentes/Producao/types";
+import { useLoaderData } from "react-router-dom";
+import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/shadcn/ui/tabs";
 import Historico from "@/componentes/Historico";
 import Producao from "@/componentes/Producao";
 import Receita from "@/componentes/Receita";
-import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/shadcn/ui/tabs";
+import { Producao as ProducaoType } from "@/componentes/Producao/types";
 
-import { useLoaderData } from "react-router-dom";
 interface IComponente {
 	codigo: number;
 	descricao: string;
@@ -29,7 +29,7 @@ export default function PadariaPage() {
 			}[]
 		>();
 	return (
-		<>
+		<div className="mt-2">
 			{produtos.map((produto) => (
 				<Tabs key={produto.codigo} defaultValue="producao">
 					<TabsList className="flex justify-center">
@@ -48,6 +48,6 @@ export default function PadariaPage() {
 					</TabsContent>
 				</Tabs>
 			))}
-		</>
+		</div>
 	);
 }

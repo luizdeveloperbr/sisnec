@@ -2,7 +2,7 @@ import "./Receita.css";
 import React from "react";
 import { decimal, money } from "@/utils";
 
- type ComponenteReceita = {
+type ComponenteReceita = {
 	codigo: number;
 	descricao: string;
 	peso_liquido: number;
@@ -10,7 +10,7 @@ import { decimal, money } from "@/utils";
 	custo: number;
 };
 
- interface IComponente {
+interface IComponente {
 	codigo: number;
 	descricao: string;
 	peso_liquido: number;

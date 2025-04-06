@@ -17,8 +17,7 @@ interface IComponente {
 	tipo: number;
 }
 
-
-export default function HortiPage() {
+export default function SetorPage() {
 	const produtos =
 		useLoaderData<
 			{
@@ -30,17 +29,13 @@ export default function HortiPage() {
 			}[]
 		>();
 	return (
-		<>
+		<div className="mt-2">
 			{produtos.map((produto) => (
-				<Tabs key={produto.codigo} defaultValue="receita">
+				<Tabs key={produto.codigo} defaultValue="producao">
 					<TabsList className="flex justify-center">
 						<TabsTrigger value="receita">Receita</TabsTrigger>
-						<TabsTrigger disabled value="producao">
-							Produção
-						</TabsTrigger>
-						<TabsTrigger disabled value="historico">
-							Histórico Produzido
-						</TabsTrigger>
+						<TabsTrigger value="producao">Produção</TabsTrigger>
+						<TabsTrigger value="historico">Histórico Produzido</TabsTrigger>
 					</TabsList>
 					<TabsContent value="receita">
 						<Receita produto={produto} />
@@ -53,6 +48,6 @@ export default function HortiPage() {
 					</TabsContent>
 				</Tabs>
 			))}
-		</>
+		</div>
 	);
 }

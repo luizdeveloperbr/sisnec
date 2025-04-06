@@ -13,7 +13,6 @@ interface IComponente {
 	tipo: number;
 }
 
-
 export async function getReceita(codigoInterno: number) {
 	const db = await Database.load("sqlite:data.db");
 	const data: IReceita[] = await db.select(
@@ -39,10 +38,13 @@ export async function getHistorico(codigoInterno: number) {
 				p.codigo AS receita_codigo,
 				p.data AS data_producao,
 				cc.descricao AS receita,
+				cc.embalagem AS embalagem,
 				p.total_produzido,
 				'[' || GROUP_CONCAT(
 					'{"componente_id":' || p.componente_id || 
 					',"descricao":"' || c.descricao || '"' || 
+					',"embalagem":"' || c.embalagem || '"' || 
+					',"peso_liquido":"' || c.peso_liquido || '"' || 
 					',"medida":' || p.medida || 
 					'}'
 				) || ']' AS componentes
@@ -58,11 +60,14 @@ export async function getHistorico(codigoInterno: number) {
 
 	return data;
 }
-export async function findComponente(codigo: string, fnLocal: (arg0: any) => void) {
-		const db = await Database.load("sqlite:data.db");
-		const queryComponente: IComponente[] = await db.select(
-			"select * from Componente where codigo = $1",
-			[codigo],
-		);
-		fnLocal(queryComponente[0]);
-	}
+export async function findComponente(
+	codigo: string,
+	fnLocal: (arg0: any) => void,
+) {
+	const db = await Database.load("sqlite:data.db");
+	const queryComponente: IComponente[] = await db.select(
+		"select * from Componente where codigo = $1",
+		[codigo],
+	);
+	fnLocal(queryComponente[0]);
+}

@@ -16,7 +16,7 @@ interface IComponente {
 	embalagem: string;
 	componente_required: number;
 	tipo: number;
-} 
+}
 
 function ComponenteProducao({
 	componenteProp,
@@ -24,7 +24,11 @@ function ComponenteProducao({
 	const [componentes, setComponentes] = useState<IComponente[]>([]);
 	const [local, setLocal] = useState<IComponente>();
 
-	async function findComponente(e: any, fnComponente: (arg0: any) => void, fnLocal: (arg0: any) => void){
+	async function findComponente(
+		e: any,
+		fnComponente: (arg0: any) => void,
+		fnLocal: (arg0: any) => void,
+	) {
 		let descricaoInput = "%" + e + "%";
 		const db = await Database.load("sqlite:data.db");
 		const queryComponente: IComponente[] = await db.select(
@@ -51,7 +55,9 @@ function ComponenteProducao({
 				type="search"
 				list={componenteProp.descricao}
 				disabled={componenteProp.estoque !== 0}
-				onChange={(e) => findComponente(e.target.value,setComponentes,setLocal)}
+				onChange={(e) =>
+					findComponente(e.target.value, setComponentes, setLocal)
+				}
 			/>
 			<datalist id={componenteProp.descricao}>
 				{componentes?.map((c, i) => (

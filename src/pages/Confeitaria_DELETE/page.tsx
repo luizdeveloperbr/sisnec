@@ -17,7 +17,6 @@ interface IComponente {
 	tipo: number;
 }
 
-
 export default function ConfeitariaPage() {
 	const produtos =
 		useLoaderData<

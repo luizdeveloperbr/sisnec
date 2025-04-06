@@ -8,7 +8,7 @@ import {
 } from "@/shadcn/ui/table";
 // import { ScrollArea } from "@/shadcn/ui/scroll-area";
 import { decimal, money } from "@/utils";
-import { useLoaderData, useFetcher } from "react-router-dom";
+import { useLoaderData, useFetcher, Link } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
 import { Button } from "@/shadcn/ui/button";
 import { findComponente } from "@/database/lib";
@@ -25,22 +25,30 @@ interface Componente {
 }
 
 export default function CadastroPage() {
-	const [local, setLocal] = useState<Pick<Componente, "codigo" | "descricao">>()
+	const [local, setLocal] =
+		useState<Pick<Componente, "codigo" | "descricao">>();
 	const insumos = useLoaderData<Componente[]>();
-	const fetch = useFetcher()
-	const codigoRef = useRef<HTMLInputElement>(null)
+	const fetch = useFetcher();
+	const codigoRef = useRef<HTMLInputElement>(null);
 
-	function handlerSubmit(event: React.FormEvent<HTMLFormElement>){
-		event.preventDefault()
-		const form = event.currentTarget
-		fetch.submit(form)
-		setLocal(undefined)
-		form.reset()
-		codigoRef.current?.focus()
-}
+	function handlerSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		const form = event.currentTarget;
+		fetch.submit(form);
+		setLocal(undefined);
+		form.reset();
+		codigoRef.current?.focus();
+	}
 	return (
-	<>
-			{/* <ScrollArea className="h-[500px]" > */}
+		// <>
+			<div className="main m-2">
+						<ul className="flex justify-center gap-2">
+							<li>
+								<Button asChild>
+									<Link to="/">Home</Link>
+								</Button>
+							</li>
+						</ul>
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -51,34 +59,48 @@ export default function CadastroPage() {
 						<TableHead>Custo</TableHead>
 					</TableRow>
 				</TableHeader>
-					<TableBody>
-						{insumos.map((insumo) => (
-							<TableRow key={insumo.codigo}>
-								<TableCell className="font-medium">{insumo.codigo}</TableCell>
-								<TableCell>{insumo.descricao}</TableCell>
-								<TableCell>
-									{insumo.embalagem.split('/')[0]} ~ {decimal(insumo.peso_liquido, 3)}
-								</TableCell>
-								<TableCell>{decimal(insumo.estoque, 3)}</TableCell>
-								<TableCell>{money(insumo.custo)}</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
+				<TableBody>
+					{insumos.map((insumo) => (
+						<TableRow key={insumo.codigo}>
+							<TableCell className="font-medium">{insumo.codigo}</TableCell>
+							<TableCell>{insumo.descricao}</TableCell>
+							<TableCell>
+								{insumo.embalagem.split("/")[0]} ~{" "}
+								{decimal(insumo.peso_liquido, 3)}
+							</TableCell>
+							<TableCell>{decimal(insumo.estoque, 3)}</TableCell>
+							<TableCell>{money(insumo.custo)}</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
 			{/* </ScrollArea> */}
-			<fetch.Form className="grid grid-cols-4 gap-2" onSubmit={handlerSubmit} method="post">
+			<fetch.Form
+				className="grid grid-cols-4 gap-2"
+				onSubmit={handlerSubmit}
+				method="post"
+			>
 				<Input
 					name="codigo"
 					placeholder="codigo"
 					type="number"
 					required
 					ref={codigoRef}
-					onChange={(e) => findComponente(e.target.value,setLocal)}
+					onChange={(e) => findComponente(e.target.value, setLocal)}
 				></Input>
-				<Input placeholder={local?.descricao ?? 'descriçao'} className="placeholder:text-black" />
-				<Input name="estoque" required type="number" placeholder="estoque"></Input>
+				<Input
+					placeholder={local?.descricao ?? "descriçao"}
+					className="placeholder:text-black"
+				/>
+				<Input
+					name="estoque"
+					required
+					type="number"
+					placeholder="estoque"
+				></Input>
 				<Button type="submit">send</Button>
 			</fetch.Form>
-		</>
+		{/* </> */}
+		</div>
 	);
 }
