@@ -11,7 +11,7 @@ import { decimal, money } from "@/utils";
 import { useLoaderData, useFetcher, Link } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
 import { Button } from "@/shadcn/ui/button";
-import { findComponente } from "@/database/lib";
+// import { findComponente } from "@/database/lib";
 import { useState, useRef } from "react";
 
 interface Componente {
@@ -86,7 +86,7 @@ export default function CadastroPage() {
 					type="number"
 					required
 					ref={codigoRef}
-					onChange={(e) => findComponente(e.target.value, setLocal)}
+					// onChange={(e) => findComponente(e.target.value, setLocal)}
 				></Input>
 				<Input
 					placeholder={local?.descricao ?? "descriçao"}

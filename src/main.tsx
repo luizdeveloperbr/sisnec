@@ -3,9 +3,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "@/Layout";
-import ProdutoRoute from "@/pages/Produto/route";
-import CadastroRoute from "@/pages/Cadastro/route";
-import ReceitaRoute from "@/pages/Receitas/route";
+// import ProdutoRoute from "@/pages/Produto/route";
+// import CadastroRoute from "@/pages/Cadastro/route";
+// import ReceitaRoute from "@/pages/Receitas/route";
 import SetorRoute from "@/pages/Setor/route"
 
 const router = createBrowserRouter([
@@ -16,9 +16,9 @@ const router = createBrowserRouter([
 			SetorRoute
 		]
 	},
-	CadastroRoute,
-	ProdutoRoute,
-	ReceitaRoute
+	// CadastroRoute,
+	// ProdutoRoute,
+	// ReceitaRoute
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

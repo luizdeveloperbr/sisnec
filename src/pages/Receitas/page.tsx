@@ -1,7 +1,7 @@
 import "./Receita.css";
 import { useState, useRef } from "react";
 import { useFetcher, useLoaderData } from "react-router-dom";
-import Database from "@tauri-apps/plugin-sql";
+// import Database from "@tauri-apps/plugin-sql";
 import { decimal, money } from "@/utils";
 import { Button } from "@/shadcn/ui/button";
 import { Input } from "@/shadcn/ui/input";
@@ -19,7 +19,7 @@ interface IComponente {
 }
 
 const ReceitaPage = () => {
-	const [receita, setReceita] =
+	const [receita] =
 		useState<Pick<IComponente, "codigo" | "descricao">>();
 	const [local, setLocal] = useState<IComponente>();
 	const [componentes, setComponentes] = useState<IComponente[]>([]);
@@ -29,23 +29,23 @@ const ReceitaPage = () => {
 
 	const allReceitas = useLoaderData<{ total: number }>();
 
-	async function findComponente(cod: string, setFunc: (arg0: any) => void) {
-		const db = await Database.load("sqlite:data.db");
-		const queryComponente: IComponente[] = await db.select(
-			"select * from Componente where codigo = $1",
-			[cod],
-		);
-		setFunc(queryComponente[0]);
-	}
+	// async function findComponente(cod: string, setFunc: (arg0: any) => void) {
+	// 	const db = await Database.load("sqlite:data.db");
+	// 	const queryComponente: IComponente[] = await db.select(
+	// 		"select * from Componente where codigo = $1",
+	// 		[cod],
+	// 	);
+	// 	setFunc(queryComponente[0]);
+	// }
 
-	async function findReceita(cod: any, setFunc: (arg0: any) => void) {
-		const db = await Database.load("sqlite:data.db");
-		const queryComponente: IComponente[] = await db.select(
-			"select * from Componente where codigo = $1",
-			[cod],
-		);
-		setFunc(queryComponente[0]);
-	}
+	// async function findReceita(cod: any, setFunc: (arg0: any) => void) {
+	// 	const db = await Database.load("sqlite:data.db");
+	// 	const queryComponente: IComponente[] = await db.select(
+	// 		"select * from Componente where codigo = $1",
+	// 		[cod],
+	// 	);
+	// 	setFunc(queryComponente[0]);
+	// }
 
 	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		fetcher.submit(event.currentTarget);
@@ -74,7 +74,7 @@ const ReceitaPage = () => {
 					className="border-gray-600"
 					name="codigo"
 					required
-					onChange={(e) => findReceita(e.target.value, setReceita)}
+					// onChange={(e) => findReceita(e.target.value, setReceita)}
 				/>
 				<div className="h-receita-descricao border-gray-600">
 					{receita?.descricao}
@@ -112,7 +112,7 @@ const ReceitaPage = () => {
 				))}
 				<Input
 					className="border-gray-600 text-center"
-					onChange={(e) => findComponente(e.target.value, setLocal)}
+					// onChange={(e) => findComponente(e.target.value, setLocal)}
 				/>
 				<Input
 					className="placeholder:text-black border-gray-600"

@@ -3,7 +3,7 @@ import "./Producao.css";
 import { Button } from "@/shadcn/ui/button";
 import { Link, useFetcher } from "react-router-dom";
 import { Input } from "@/shadcn/ui/input";
-import Database from "@tauri-apps/plugin-sql";
+// import Database from "@tauri-apps/plugin-sql";
 import { decimal } from "@/utils";
 
 interface IComponente {
@@ -21,26 +21,26 @@ interface IComponente {
 function ComponenteProducao({
 	componenteProp,
 }: { componenteProp: IComponente }) {
-	const [componentes, setComponentes] = useState<IComponente[]>([]);
-	const [local, setLocal] = useState<IComponente>();
+	const [componentes] = useState<IComponente[]>([]);
+	const [local] = useState<IComponente>();
 
-	async function findComponente(
-		e: any,
-		fnComponente: (arg0: any) => void,
-		fnLocal: (arg0: any) => void,
-	) {
-		let descricaoInput = "%" + e + "%";
-		const db = await Database.load("sqlite:data.db");
-		const queryComponente: IComponente[] = await db.select(
-			"select * from Componente where descricao like $1",
-			[descricaoInput],
-		);
-		if (queryComponente.length !== 1) {
-			fnComponente(queryComponente);
-		} else {
-			fnLocal(queryComponente[0]);
-		}
-	}
+	// async function findComponente(
+	// 	e: any,
+	// 	fnComponente: (arg0: any) => void,
+	// 	fnLocal: (arg0: any) => void,
+	// ) {
+	// 	let descricaoInput = "%" + e + "%";
+	// 	const db = await Database.load("sqlite:data.db");
+	// 	const queryComponente: IComponente[] = await db.select(
+	// 		"select * from Componente where descricao like $1",
+	// 		[descricaoInput],
+	// 	);
+	// 	if (queryComponente.length !== 1) {
+	// 		fnComponente(queryComponente);
+	// 	} else {
+	// 		fnLocal(queryComponente[0]);
+	// 	}
+	// }
 
 	return (
 		<React.Fragment>
@@ -55,9 +55,9 @@ function ComponenteProducao({
 				type="search"
 				list={componenteProp.descricao}
 				disabled={componenteProp.estoque !== 0}
-				onChange={(e) =>
-					findComponente(e.target.value, setComponentes, setLocal)
-				}
+				// onChange={(e) =>
+				// 	findComponente(e.target.value, setComponentes, setLocal)
+				// }
 			/>
 			<datalist id={componenteProp.descricao}>
 				{componentes?.map((c, i) => (
