@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router";
 import { Tabs, TabsContent, TabsTrigger, TabsList } from "@/shadcn/ui/tabs";
 import Historico from "@/componentes/Historico";
 import Producao from "@/componentes/Producao";

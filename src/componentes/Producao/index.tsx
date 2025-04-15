@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Producao.css";
 import { Button } from "@/shadcn/ui/button";
-import { Link, useFetcher } from "react-router-dom";
+import { Link, useFetcher } from "react-router";
 import { Input } from "@/shadcn/ui/input";
 // import Database from "@tauri-apps/plugin-sql";
 import { decimal } from "@/utils";
@@ -109,9 +109,7 @@ function ComponenteProducao({
 
 const ProducaoComponente = ({
 	produto,
-}: {
-	produto: { codigo: number; descricao: string; componentes: IComponente[] };
-}) => {
+}: any) => {
 	const fetcher = useFetcher();
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -144,7 +142,7 @@ const ProducaoComponente = ({
 				type="number"
 				step="0.001"
 			/>
-			{produto.componentes?.map((componente) => {
+			{produto.componentes?.map((componente: any) => {
 				return (
 					<ComponenteProducao
 						key={componente.codigo}

@@ -7,11 +7,11 @@ import {
 	TableRow,
 } from "@/shadcn/ui/table";
 // import { ScrollArea } from "@/shadcn/ui/scroll-area";
+// import { findComponente } from "@/database/lib";
 import { decimal, money } from "@/utils";
-import { useLoaderData, useFetcher, Link } from "react-router-dom";
+import { useLoaderData, useFetcher, Link } from "react-router";
 import { Input } from "@/shadcn/ui/input";
 import { Button } from "@/shadcn/ui/button";
-// import { findComponente } from "@/database/lib";
 import { useState, useRef } from "react";
 
 interface Componente {
@@ -25,10 +25,10 @@ interface Componente {
 }
 
 export default function CadastroPage() {
-	const [local, setLocal] =
-		useState<Pick<Componente, "codigo" | "descricao">>();
-	const insumos = useLoaderData<Componente[]>();
+	const [local, setLocal] = useState<Pick<Componente, "codigo" | "descricao"> | undefined>();
+	const insumos: Array<{codigo: number, descricao: string, peso_liquido: number, embalagem: string, custo: number, estoque: number}> = useLoaderData();
 	const fetch = useFetcher();
+	//@ts-ignore
 	const codigoRef = useRef<HTMLInputElement>(null);
 
 	function handlerSubmit(event: React.FormEvent<HTMLFormElement>) {

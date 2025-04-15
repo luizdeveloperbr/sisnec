@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router";
 import { Button } from "@/shadcn/ui/button";
 
 function LayoutPage() {

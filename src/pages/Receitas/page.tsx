@@ -1,6 +1,6 @@
 import "./Receita.css";
 import { useState, useRef } from "react";
-import { useFetcher, useLoaderData } from "react-router-dom";
+import { useFetcher, useLoaderData } from "react-router";
 // import Database from "@tauri-apps/plugin-sql";
 import { decimal, money } from "@/utils";
 import { Button } from "@/shadcn/ui/button";

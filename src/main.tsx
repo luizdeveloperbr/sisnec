@@ -1,7 +1,7 @@
 import "./layout.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import Layout from "@/Layout";
 // import ProdutoRoute from "@/pages/Produto/route";
 // import CadastroRoute from "@/pages/Cadastro/route";
