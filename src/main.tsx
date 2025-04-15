@@ -1,17 +1,17 @@
 import "./layout.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider, RouteObject } from "react-router";
 import Layout from "@/Layout";
 // import ProdutoRoute from "@/pages/Produto/route";
 // import CadastroRoute from "@/pages/Cadastro/route";
 // import ReceitaRoute from "@/pages/Receitas/route";
 import SetorRoute from "@/pages/Setor/route"
-
-const router = createBrowserRouter([
+const routes: RouteObject[] = [
 	{
 		path: "/",
 		Component: Layout,
+		errorElement: <div>error</div>,
 		children: [
 			SetorRoute
 		]
@@ -19,10 +19,10 @@ const router = createBrowserRouter([
 	// CadastroRoute,
 	// ProdutoRoute,
 	// ReceitaRoute
-]);
+];
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<RouterProvider router={createBrowserRouter(routes)} />
 	</React.StrictMode>,
 );

@@ -3,19 +3,6 @@ let sql = neon(import.meta.env.VITE_NEON_URL as string)
 import { drizzle } from "drizzle-orm/neon-http"
 
 const db = drizzle({client: sql})
-// import { IReceita } from "@/componentes/Receita/types";
-// import { Producao as ProducaoType } from "@/componentes/Producao/types";
-// interface IComponente {
-// 	codigo: number;
-// 	descricao: string;
-// 	peso_liquido: number;
-// 	medida: number;
-// 	custo: number;
-// 	estoque: number;
-// 	embalagem: string;
-// 	componente_required: number;
-// 	tipo: number;
-// }
 
 export async function getReceita(codigoInterno: number) {
 	const data = await db.execute(
@@ -34,7 +21,7 @@ export async function getHistorico(codigoInterno: number) {
 	const data = await db.execute(
 		`SELECT  
             p.codigo AS receita_codigo,
-            p.data AS data_producao,
+            p.criada_em AS data_producao,
             cc.descricao AS receita,
             cc.embalagem AS embalagem,
             p.total_produzido,
@@ -51,15 +38,14 @@ export async function getHistorico(codigoInterno: number) {
         JOIN Componente cc ON p.codigo = cc.codigo
         JOIN Componente c ON p.componente_id = c.codigo
         WHERE p.codigo = ${codigoInterno}
-        GROUP BY p.codigo, p.data, cc.descricao, cc.embalagem, p.total_produzido;
+        GROUP BY p.codigo, p.criada_em, cc.descricao, cc.embalagem, p.total_produzido;
 `	);
 
 	return data.rows;
 }
 
 export async function insertProducaoComponentes(values: any){
-    console.log("values", values)
-     await db.execute(`INSERT INTO Producao (codigo, total_produzido, componente_id, medida, data) VALUES (${values.receita}, ${values.total_produzido}, ${values.componente_id}, ${values.medida}, ${values.data})`);
+     await db.execute(`INSERT INTO Producao (codigo, total_produzido, componente_id, medida, criada_em) VALUES (${values.receita}, ${values.total_produzido}, ${values.componente_id}, ${values.medida}, '${values.data}')`);
 }
 
 export async function updateComponente(values: any){
