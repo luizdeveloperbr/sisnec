@@ -25,6 +25,7 @@ const ReceitaPage = () => {
 	const [componentes, setComponentes] = useState<IComponente[]>([]);
 
 	const medida = useRef<HTMLInputElement>(null);
+	const componenteObrigatorio = useRef<HTMLInputElement>(null);
 	const fetcher = useFetcher();
 
 	const allReceitas = useLoaderData<{ total: number }>();
@@ -54,7 +55,11 @@ const ReceitaPage = () => {
 
 	function handleAddComponent() {
 		let medidaValue = medida.current?.valueAsNumber;
-		let data = Object.assign({ medida: medidaValue }, local);
+		let obrigatorio = componenteObrigatorio.current?.checked;
+		let data = Object.assign(
+			{ medida: medidaValue, componente_required: obrigatorio ? 1 : 0 },
+			local,
+		);
 		setComponentes((old) => [...old, data]);
 		setLocal(undefined);
 	}
@@ -89,7 +94,7 @@ const ReceitaPage = () => {
 				<div className="h-porc-emb-rms">
 					custo <br /> produzido
 				</div>
-				<div>*</div>
+				<div>Obrigatorio</div>
 				<div>*</div>
 				<div className="h-componente-codigo">codigo</div>
 				<div className="h-componente-descricao">descrição</div>
@@ -101,12 +106,18 @@ const ReceitaPage = () => {
 							defaultValue={componente.medida}
 							type="hidden"
 						/>
+						<Input
+							name={`required-${componente?.codigo.toString()}`}
+							defaultValue={componente.componente_required}
+							type="hidden"
+						/>
 						<div>{componente.descricao}</div>
 						<div>{componente.embalagem}</div>
 						<div>{componente.peso_liquido}</div>
 						<div>{componente.medida}</div>
 						<div>{money(componente.custo)}</div>
 						<div>{money(componente.medida * componente.custo)}</div>
+						<div>{componente.componente_required ? "sim" : ""}</div>
 						<div>***</div>
 					</>
 				))}
@@ -130,7 +141,9 @@ const ReceitaPage = () => {
 					ref={medida}
 				/>
 				<div>{money(local?.custo || 0)}</div>
-				<div></div>
+				<div>
+					<input type="checkbox" ref={componenteObrigatorio} />
+				</div>
 				<Button
 					disabled={local?.codigo == undefined}
 					type="button"

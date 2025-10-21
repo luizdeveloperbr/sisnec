@@ -10,23 +10,41 @@ const route: RouteObject = {
 		const codigo = formdata.get("codigo");
 		const rendimento = formdata.get("rendimento");
 		const secao = formdata.get("secao");
-		const componentes = Array.from(formdata.entries()).filter(
-			([key]) => key !== "codigo" && key !== "rendimento" && key !== "secao",
+
+		formdata.delete("codigo");
+		formdata.delete("rendimento");
+		formdata.delete("secao");
+
+		const componentes = Array.from(formdata.entries());
+		const componentes_medida = componentes.filter(
+			([key]) => !key.startsWith("required"),
 		);
+		const componentes_required = componentes.filter(([key]) =>
+			key.startsWith("required"),
+		);
+
 		await db.execute(
 			"insert or ignore into Receita(codigo, rendimento, secao) values ($1, $2, $3)",
 			[Number(codigo), Number(rendimento), Number(secao)],
 		);
 
-		const addComponentes = componentes.map(async ([componente_id, medida]) => {
-			if (Boolean(medida)) {
-				await db.execute(
-					"insert or ignore into Componente_Receita(receita_codigo, componente_codigo, medida) values ($1, $2, $3)",
-					[Number(codigo), Number(componente_id), Number(medida)],
-				);
-			}
-			// return null
-		});
+		const addComponentes = componentes_medida.map(
+			async ([componente_id, medida], index) => {
+				if (Boolean(medida)) {
+					await db.execute(
+						"insert or ignore into Componente_Receita(receita_codigo, componente_codigo, medida, componente_required) values ($1, $2, $3, $4)",
+						[
+							Number(codigo),
+							Number(componente_id),
+							Number(medida),
+							Number(componentes_required[index][1]),
+						],
+					);
+				}
+				// return null
+			},
+		);
+
 		await Promise.all(addComponentes);
 		return null;
 	},
