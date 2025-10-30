@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import { Button } from "@/shadcn/ui/button";
-
 function LayoutPage() {
+
 	return (
 		<div className="main m-2">
 			<ul className="flex justify-center gap-2">

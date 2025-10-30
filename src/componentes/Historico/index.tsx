@@ -31,7 +31,10 @@ const Historico = ({ produto }: { produto: { historico: ProducaoType[] } }) => {
 							<CollapsibleTrigger className="grid grid-cols-historico w-full uppercase">
 								<div>{prod.receita_codigo}</div>
 								<div>{prod.receita}</div>
-								<div>{decimal(prod.total_produzido, 3)} {prod.embalagem.split('/')[0]}</div>
+								<div>
+									{decimal(prod.total_produzido, 3)}{" "}
+									{prod.embalagem.split("/")[0]}
+								</div>
 								<div>{prod.data_producao}</div>
 							</CollapsibleTrigger>
 							<CollapsibleContent className="uppercase text-center">
@@ -42,7 +45,9 @@ const Historico = ({ produto }: { produto: { historico: ProducaoType[] } }) => {
 									>
 										<div>{item.componente_id}</div>
 										<div className="text-left">{item.descricao}</div>
-										<div>{decimal(item.medida, 3)} {item.embalagem.split("/")[0]}</div>
+										<div>
+											{decimal(item.medida, 3)} {item.embalagem.split("/")[0]}
+										</div>
 										<div>{item.medida / item.peso_liquido}</div>
 									</div>
 								))}

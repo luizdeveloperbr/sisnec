@@ -41,14 +41,14 @@ export default function CadastroPage() {
 	}
 	return (
 		// <>
-			<div className="main m-2">
-						<ul className="flex justify-center gap-2">
-							<li>
-								<Button asChild>
-									<Link to="/">Home</Link>
-								</Button>
-							</li>
-						</ul>
+		<div className="main m-2">
+			<ul className="flex justify-center gap-2">
+				<li>
+					<Button asChild>
+						<Link to="/">Home</Link>
+					</Button>
+				</li>
+			</ul>
 			<Table>
 				<TableHeader>
 					<TableRow>
@@ -100,7 +100,7 @@ export default function CadastroPage() {
 				></Input>
 				<Button type="submit">send</Button>
 			</fetch.Form>
-		{/* </> */}
+			{/* </> */}
 		</div>
 	);
 }
