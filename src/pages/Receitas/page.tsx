@@ -1,10 +1,11 @@
 import "./Receita.css";
 import { useState, useRef } from "react";
-import { useFetcher, useLoaderData } from "react-router-dom";
+import { Link, useFetcher } from "react-router-dom";
 import Database from "@tauri-apps/plugin-sql";
 import { decimal, money } from "@/utils";
 import { Button } from "@/shadcn/ui/button";
 import { Input } from "@/shadcn/ui/input";
+import {ComponenteAdicionado} from "@/componentes/Componente"
 
 interface IComponente {
 	codigo: number;
@@ -26,8 +27,6 @@ const ReceitaPage = () => {
 
 	const medida = useRef<HTMLInputElement>(null);
 	const fetcher = useFetcher();
-
-	const allReceitas = useLoaderData<{ total: number }>();
 
 	async function findComponente(cod: string, setFunc: (arg0: any) => void) {
 		const db = await Database.load("sqlite:data.db");
@@ -65,9 +64,13 @@ const ReceitaPage = () => {
 				<select className="border border-black rounded h-10" name="secao">
 					<option value="35">padaria</option>
 					<option value="96">material de uso</option>
-					<option value="95" selected>atelier</option>
+					<option value="95" selected>
+						atelier
+					</option>
 				</select>
-				<span>{allReceitas.total}</span>
+				<Button asChild>
+						<Link to="/">Home</Link>
+				</Button>
 			</div>
 			<div className="form-wrap">
 				<Input
@@ -93,23 +96,7 @@ const ReceitaPage = () => {
 				<div>*</div>
 				<div className="h-componente-codigo">codigo</div>
 				<div className="h-componente-descricao">descrição</div>
-				{componentes?.map((componente) => (
-					<>
-						<div key={componente.codigo}>{componente.codigo}</div>
-						<Input
-							name={componente?.codigo.toString()}
-							defaultValue={componente.medida}
-							type="hidden"
-						/>
-						<div>{componente.descricao}</div>
-						<div>{componente.embalagem}</div>
-						<div>{componente.peso_liquido}</div>
-						<div>{componente.medida}</div>
-						<div>{money(componente.custo)}</div>
-						<div>{money(componente.medida * componente.custo)}</div>
-						<div>***</div>
-					</>
-				))}
+				<ComponenteAdicionado injectData={componentes} />
 				<Input
 					className="border-gray-600 text-center"
 					onChange={(e) => findComponente(e.target.value, setLocal)}
