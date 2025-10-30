@@ -1,4 +1,5 @@
 import Database from "@tauri-apps/plugin-sql";
+import { format } from "date-fns";
 import { IReceita } from "@/componentes/Receita/types";
 import { Producao as ProducaoType } from "@/componentes/Producao/types";
 interface IComponente {
@@ -20,6 +21,15 @@ export async function getReceita(codigoInterno: number) {
 		[codigoInterno],
 	);
 	return data[0];
+}
+
+export async function findReceitas(secao: number) {
+	const db = await Database.load("sqlite:data.db");
+	const codigos: { codigo: number }[] = await db.select(
+		"select codigo from Receita where secao = $1",
+		[secao],
+	);
+	return codigos;
 }
 export async function getComponente(codigoInterno: number) {
 	const db = await Database.load("sqlite:data.db");
@@ -60,6 +70,33 @@ export async function getHistorico(codigoInterno: number) {
 
 	return data;
 }
+
+export async function RegistraComponente(
+	componentes: any[],
+	{ receita, total_produzido }: { receita: number; total_produzido: number },
+) {
+	const db = await Database.load("sqlite:data.db");
+	const timestamp = format(new Date(), "yyyy-MM-dd H:mm:ss");
+	return componentes.map(async ([componente_id, medida]) => {
+		if (Boolean(medida)) {
+			await db.execute(
+				"insert into Producao(codigo, total_produzido, componente_id, medida, data) values ($1, $2, $3, $4, $5)",
+				[
+					receita,
+					total_produzido,
+					Number(componente_id),
+					Number(medida),
+					timestamp,
+				],
+			);
+			await db.execute(
+				"update Componente set estoque = estoque - $1 WHERE codigo = $2",
+				[Number(medida), Number(componente_id)],
+			);
+		}
+	});
+}
+
 export async function findComponente(
 	codigo: string,
 	fnLocal: (arg0: any) => void,
