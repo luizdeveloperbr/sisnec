@@ -1,9 +1,28 @@
-// import React from "react";
+import "./layout.css";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "@/Layout";
+import ProdutoRoute from "@/pages/Produto/route";
+import CadastroRoute from "@/pages/Cadastro/route";
+import ReceitaRoute from "@/pages/Receitas/route";
+import SetorRoute from "@/pages/Setor/route"
+
+const router = createBrowserRouter([
+	{
+		path: "/",
+		Component: Layout,
+		children: [
+			SetorRoute
+		]
+	},
+	CadastroRoute,
+	ProdutoRoute,
+	ReceitaRoute
+]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  // <React.StrictMode>
-    <App />
-  // </React.StrictMode>,
+	<React.StrictMode>
+		<RouterProvider router={router} />
+	</React.StrictMode>,
 );
